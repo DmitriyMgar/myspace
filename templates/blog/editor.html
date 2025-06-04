@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+
+{% block title %}{% if is_new %}Новая статья{% else %}Редактирование статьи{% endif %} | Киберблог{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="editor-container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="editor-header">
+                <h2 class="cyber-heading">{% if is_new %}Новая статья{% else %}Редактирование статьи{% endif %}</h2>
+                <div class="glow-line"></div>
+            </div>
+            
+            <form method="POST" enctype="multipart/form-data" class="editor-form">
+                {{ form.hidden_tag() }}
+                
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group cyber-input-group">
+                            {{ form.title.label(class="form-label") }}
+                            {{ form.title(class="form-control cyber-input", placeholder="Введите заголовок статьи") }}
+                            {% if form.title.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.title.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group cyber-input-group">
+                            {{ form.content.label(class="form-label") }}
+                            {{ form.content(class="form-control", rows=20, id="markdown-editor") }}
+                            {% if form.content.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.content.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">
+                                Поддерживается Markdown разметка. Вы можете использовать заголовки, списки, ссылки, изображения и другие элементы форматирования.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="editor-sidebar">
+                            <div class="sidebar-section">
+                                <h4>Настройки публикации</h4>
+                                <div class="form-check cyber-checkbox mb-3">
+                                    {{ form.is_published(class="form-check-input") }}
+                                    {{ form.is_published.label(class="form-check-label") }}
+                                </div>
+                            </div>
+                            
+                            <div class="sidebar-section">
+                                <h4>Категория</h4>
+                                <div class="form-group cyber-input-group">
+                                    {{ form.category_id.label(class="form-label") }}
+                                    {{ form.category_id(class="form-select cyber-input", id="category-select") }}
+                                    {% if form.category_id.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.category_id.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="form-group cyber-input-group" id="subcategory-container" style="display: none;">
+                                    {{ form.subcategory_id.label(class="form-label") }}
+                                    {{ form.subcategory_id(class="form-select cyber-input") }}
+                                </div>
+                            </div>
+                            
+                            <div class="sidebar-section">
+                                <h4>Обложка</h4>
+                                <div class="form-group cyber-input-group">
+                                    {{ form.cover_image.label(class="form-label") }}
+                                    {{ form.cover_image(class="form-control cyber-input") }}
+                                    {% if form.cover_image.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.cover_image.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                    <div class="form-text">Рекомендуемый размер: 1200x630px</div>
+                                </div>
+                                
+                                {% if not is_new and post.cover_image %}
+                                <div class="current-cover mt-2">
+                                    <p>Текущая обложка:</p>
+                                    <img src="{{ url_for('static', filename=post.cover_image) }}" alt="Текущая обложка" class="img-fluid">
+                                </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="sidebar-section">
+                                <h4>Теги</h4>
+                                <div class="form-group cyber-input-group">
+                                    {{ form.tags.label(class="form-label") }}
+                                    {{ form.tags(class="form-control cyber-input", placeholder="Введите теги через запятую") }}
+                                    {% if form.tags.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.tags.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                    <div class="form-text">Например: технологии, программирование, наука</div>
+                                </div>
+                            </div>
+                            
+                            <div class="sidebar-section">
+                                <div class="d-grid">
+                                    {{ form.submit(class="btn btn-cyber-primary") }}
+                                </div>
+                                <div class="d-grid mt-2">
+                                    <a href="{{ url_for('main.index') }}" class="btn btn-cyber-secondary">
+                                        <span class="btn-content">Отмена</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Инициализация Markdown редактора
+        const easyMDE = new EasyMDE({
+            element: document.getElementById('markdown-editor'),
+            spellChecker: false,
+            autosave: {
+                enabled: true,
+                uniqueId: "post-editor",
+                delay: 1000,
+            },
+            toolbar: [
+                "bold", "italic", "heading", "|", 
+                "quote", "unordered-list", "ordered-list", "|",
+                "link", "image", "code", "table", "|",
+                "preview", "side-by-side", "fullscreen", "|",
+                "guide"
+            ],
+            placeholder: "Начните писать здесь...",
+            status: ["autosave", "lines", "words", "cursor"],
+            renderingConfig: {
+                codeSyntaxHighlighting: true,
+            }
+        });
+        
+        // Обработка выбора категории для загрузки подкатегорий
+        const categorySelect = document.getElementById('category-select');
+        const subcategoryContainer = document.getElementById('subcategory-container');
+        const subcategorySelect = document.getElementById('subcategory_id');
+        
+        categorySelect.addEventListener('change', function() {
+            const categoryId = this.value;
+            if (!categoryId) {
+                subcategoryContainer.style.display = 'none';
+                return;
+            }
+            
+            // Очищаем текущие подкатегории
+            while (subcategorySelect.options.length > 1) {
+                subcategorySelect.remove(1);
+            }
+            
+            // Запрашиваем подкатегории для выбранной категории
+            fetch(`/blog/get-subcategories/${categoryId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.subcategories && data.subcategories.length > 0) {
+                        data.subcategories.forEach(subcat => {
+                            const option = document.createElement('option');
+                            option.value = subcat.id;
+                            option.textContent = subcat.name;
+                            subcategorySelect.appendChild(option);
+                        });
+                        subcategoryContainer.style.display = 'block';
+                    } else {
+                        subcategoryContainer.style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка при загрузке подкатегорий:', error);
+                    subcategoryContainer.style.display = 'none';
+                });
+        });
+        
+        // Если редактирование, то проверяем наличие подкатегорий при загрузке
+        if (categorySelect.value) {
+            categorySelect.dispatchEvent(new Event('change'));
+        }
+    });
+</script>
+{% endblock %} 

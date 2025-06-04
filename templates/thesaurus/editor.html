@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block title %}{% if is_new %}Новый термин{% else %}Редактирование термина{% endif %} | Тезаурус | Киберблог{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="editor-container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="editor-header">
+                <h2 class="cyber-heading">{% if is_new %}Новый термин{% else %}Редактирование термина{% endif %}</h2>
+                <div class="glow-line"></div>
+            </div>
+            
+            <form method="POST" class="editor-form">
+                {{ form.hidden_tag() }}
+                
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group cyber-input-group">
+                            {{ form.term.label(class="form-label") }}
+                            {{ form.term(class="form-control cyber-input", placeholder="Введите термин") }}
+                            {% if form.term.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.term.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group cyber-input-group">
+                            {{ form.definition.label(class="form-label") }}
+                            {{ form.definition(class="form-control", rows=15, id="markdown-editor") }}
+                            {% if form.definition.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.definition.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">
+                                Поддерживается Markdown разметка. Вы можете использовать заголовки, списки, ссылки, изображения и другие элементы форматирования.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="editor-sidebar">
+                            <div class="sidebar-section">
+                                <h4>Категория</h4>
+                                <div class="form-group cyber-input-group">
+                                    {{ form.category.label(class="form-label") }}
+                                    {{ form.category(class="form-select cyber-input", id="category-select") }}
+                                    {% if form.category.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.category.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div id="new-category-container" style="display: none;">
+                                    <div class="form-group cyber-input-group mt-2">
+                                        {{ form.new_category.label(class="form-label") }}
+                                        {{ form.new_category(class="form-control cyber-input", placeholder="Введите название новой категории") }}
+                                        {% if form.new_category.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {% for error in form.new_category.errors %}
+                                                    {{ error }}
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="sidebar-section">
+                                <h4>Связанные термины</h4>
+                                <div class="form-group cyber-input-group">
+                                    {{ form.related_terms.label(class="form-label") }}
+                                    {{ form.related_terms(class="form-select cyber-input", id="related-terms-select", multiple="multiple") }}
+                                    {% if form.related_terms.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.related_terms.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                    <div class="form-text">
+                                        Выберите термины, которые связаны с данным термином.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="sidebar-section">
+                                <div class="d-grid">
+                                    {{ form.submit(class="btn btn-cyber-primary") }}
+                                </div>
+                                <div class="d-grid mt-2">
+                                    <a href="{{ url_for('thesaurus.index') }}" class="btn btn-cyber-secondary">
+                                        <span class="btn-content">Отмена</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Инициализация Markdown редактора
+        const easyMDE = new EasyMDE({
+            element: document.getElementById('markdown-editor'),
+            spellChecker: false,
+            autosave: {
+                enabled: true,
+                uniqueId: "term-editor",
+                delay: 1000,
+            },
+            toolbar: [
+                "bold", "italic", "heading", "|", 
+                "quote", "unordered-list", "ordered-list", "|",
+                "link", "image", "code", "table", "|",
+                "preview", "side-by-side", "fullscreen", "|",
+                "guide"
+            ],
+            placeholder: "Введите определение термина...",
+            status: ["autosave", "lines", "words", "cursor"],
+            renderingConfig: {
+                codeSyntaxHighlighting: true,
+            }
+        });
+        
+        // Инициализация Select2 для связанных терминов
+        $('#related-terms-select').select2({
+            theme: 'bootstrap-5',
+            placeholder: 'Выберите связанные термины',
+            allowClear: true,
+            width: '100%'
+        });
+        
+        // Обработка выбора категории
+        const categorySelect = document.getElementById('category-select');
+        const newCategoryContainer = document.getElementById('new-category-container');
+        
+        categorySelect.addEventListener('change', function() {
+            if (this.value === 'new') {
+                newCategoryContainer.style.display = 'block';
+            } else {
+                newCategoryContainer.style.display = 'none';
+            }
+        });
+        
+        // Если выбрана опция "Создать новую категорию", показываем поле ввода
+        if (categorySelect.value === 'new') {
+            newCategoryContainer.style.display = 'block';
+        }
+    });
+</script>
+{% endblock %} 

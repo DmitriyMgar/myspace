@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}404 - Страница не найдена | Киберблог{% endblock %}
+
+{% block content %}
+<div class="error-page">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h1 class="glitch-text">
+                <span class="glitch-text-item">404</span>
+            </h1>
+            <div class="error-message">
+                <p class="lead">СТРАНИЦА НЕ НАЙДЕНА</p>
+                <p>Запрашиваемая страница не существует или была удалена.</p>
+                <div class="error-code">
+                    <pre class="error-code-text">
+ERROR: 0x80070002
+FILE_NOT_FOUND
+CONNECTION_TERMINATED
+                    </pre>
+                </div>
+                <a href="{{ url_for('main.index') }}" class="btn btn-cyber-primary mt-4">
+                    <span class="btn-content"><i class="fas fa-home me-2"></i>На главную</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Анимация мерцания текста
+    document.addEventListener('DOMContentLoaded', function() {
+        const errorText = document.querySelector('.error-code-text');
+        setInterval(() => {
+            errorText.classList.toggle('flicker');
+        }, 2000);
+    });
+</script>
+{% endblock %} 

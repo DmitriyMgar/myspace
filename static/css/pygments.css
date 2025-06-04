@@ -1,0 +1,139 @@
+/* Стили для подсветки синтаксиса кода с использованием Pygments */
+
+.codehilite {
+    background: #121520;
+    border-radius: 4px;
+    border: 1px solid #2a2a3a;
+    margin: 1rem 0;
+    overflow: auto;
+    padding: 1rem;
+}
+
+.codehilite pre {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+    color: #e0e0e0;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Базовые стили */
+.codehilite .hll { background-color: #272822; }
+.codehilite .c { color: #75715e; } /* Комментарий */
+.codehilite .err { color: #ff3860; } /* Ошибка */
+.codehilite .k { color: #66d9ef; } /* Ключевое слово */
+.codehilite .l { color: #ae81ff; } /* Литерал */
+.codehilite .n { color: #f8f8f2; } /* Имя */
+.codehilite .o { color: #f92672; } /* Оператор */
+.codehilite .p { color: #f8f8f2; } /* Пунктуация */
+.codehilite .cm { color: #75715e; } /* Многострочный комментарий */
+.codehilite .cp { color: #75715e; } /* Директива препроцессора */
+.codehilite .c1 { color: #75715e; } /* Однострочный комментарий */
+.codehilite .cs { color: #75715e; } /* Специальный комментарий */
+.codehilite .gd { color: #f92672; } /* Удаленный */
+.codehilite .ge { font-style: italic; } /* Выделение */
+.codehilite .gi { color: #a6e22e; } /* Вставленный */
+.codehilite .gs { font-weight: bold; } /* Сильный */
+.codehilite .gu { color: #75715e; } /* Подчеркивание */
+.codehilite .kc { color: #66d9ef; } /* Константное ключевое слово */
+.codehilite .kd { color: #66d9ef; } /* Объявление ключевого слова */
+.codehilite .kn { color: #f92672; } /* Пространство имен ключевого слова */
+.codehilite .kp { color: #66d9ef; } /* Ключевое слово псевдо */
+.codehilite .kr { color: #66d9ef; } /* Ключевое слово зарезервированное */
+.codehilite .kt { color: #66d9ef; } /* Тип ключевого слова */
+.codehilite .ld { color: #e6db74; } /* Литерал даты */
+.codehilite .m { color: #ae81ff; } /* Число */
+.codehilite .s { color: #e6db74; } /* Строка */
+.codehilite .na { color: #a6e22e; } /* Атрибут имени */
+.codehilite .nb { color: #f8f8f2; } /* Встроенное имя */
+.codehilite .nc { color: #a6e22e; } /* Имя класса */
+.codehilite .no { color: #66d9ef; } /* Имя константы */
+.codehilite .nd { color: #a6e22e; } /* Имя декоратора */
+.codehilite .ni { color: #f8f8f2; } /* Имя сущности */
+.codehilite .ne { color: #a6e22e; } /* Имя исключения */
+.codehilite .nf { color: #a6e22e; } /* Имя функции */
+.codehilite .nl { color: #f8f8f2; } /* Имя метки */
+.codehilite .nn { color: #f8f8f2; } /* Имя пространства имен */
+.codehilite .nx { color: #a6e22e; } /* Другое имя */
+.codehilite .py { color: #f8f8f2; } /* Имя свойства */
+.codehilite .nt { color: #f92672; } /* Имя тега */
+.codehilite .nv { color: #f8f8f2; } /* Имя переменной */
+.codehilite .ow { color: #f92672; } /* Слово оператора */
+.codehilite .w { color: #f8f8f2; } /* Пробел */
+.codehilite .mb { color: #ae81ff; } /* Двоичное число */
+.codehilite .mf { color: #ae81ff; } /* Число с плавающей точкой */
+.codehilite .mh { color: #ae81ff; } /* Шестнадцатеричное число */
+.codehilite .mi { color: #ae81ff; } /* Целое число */
+.codehilite .mo { color: #ae81ff; } /* Восьмеричное число */
+.codehilite .sa { color: #e6db74; } /* Строковый литерал */
+.codehilite .sb { color: #e6db74; } /* Строка в одинарных кавычках */
+.codehilite .sc { color: #e6db74; } /* Строка в двойных кавычках */
+.codehilite .dl { color: #e6db74; } /* Строковый разделитель */
+.codehilite .sd { color: #e6db74; } /* Строка документации */
+.codehilite .s2 { color: #e6db74; } /* Строка в двойных кавычках */
+.codehilite .se { color: #ae81ff; } /* Экранированная строка */
+.codehilite .sh { color: #e6db74; } /* Строка в одинарных кавычках */
+.codehilite .si { color: #e6db74; } /* Строка интерполяции */
+.codehilite .sx { color: #e6db74; } /* Другая строка */
+.codehilite .sr { color: #e6db74; } /* Регулярное выражение */
+.codehilite .s1 { color: #e6db74; } /* Строка в одинарных кавычках */
+.codehilite .ss { color: #e6db74; } /* Символьная строка */
+.codehilite .bp { color: #f8f8f2; } /* Встроенное имя псевдо */
+.codehilite .fm { color: #a6e22e; } /* Метод функции */
+.codehilite .vc { color: #f8f8f2; } /* Переменная класса */
+.codehilite .vg { color: #f8f8f2; } /* Глобальная переменная */
+.codehilite .vi { color: #f8f8f2; } /* Переменная экземпляра */
+.codehilite .vm { color: #f8f8f2; } /* Переменная магическая */
+.codehilite .il { color: #ae81ff; } /* Целое число длинное */
+
+/* Специальные стили для киберпанк-темы */
+.codehilite .k, .codehilite .kd, .codehilite .kn, .codehilite .kr, .codehilite .kt {
+    color: #0ff;
+    text-shadow: 0 0 2px #0ff;
+}
+
+.codehilite .nf, .codehilite .na, .codehilite .nc {
+    color: #00ff9d;
+    text-shadow: 0 0 2px #00ff9d;
+}
+
+.codehilite .s, .codehilite .s1, .codehilite .s2 {
+    color: #ff00a0;
+    text-shadow: 0 0 2px #ff00a0;
+}
+
+.codehilite .m, .codehilite .mi, .codehilite .mf {
+    color: #ae81ff;
+    text-shadow: 0 0 2px #ae81ff;
+}
+
+/* Стили для номеров строк */
+.codehilite .linenos {
+    color: #75715e;
+    background-color: #272822;
+    padding-right: 10px;
+    margin-right: 10px;
+    border-right: 1px solid #3a3a3a;
+    user-select: none;
+}
+
+/* Стили для выделенной строки */
+.codehilite .hll {
+    background-color: rgba(0, 255, 157, 0.1);
+    display: block;
+    width: 100%;
+}
+
+/* Анимация для киберпанк-эффекта */
+@keyframes code-glow {
+    0% { text-shadow: 0 0 2px currentColor; }
+    50% { text-shadow: 0 0 5px currentColor; }
+    100% { text-shadow: 0 0 2px currentColor; }
+}
+
+.codehilite .k, .codehilite .nf, .codehilite .s {
+    animation: code-glow 2s infinite;
+} 

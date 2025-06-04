@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}{{ term.term }} | Тезаурус | Киберблог{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pygments.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="term-container">
+    <div class="row">
+        <div class="col-lg-8">
+            <article class="term-full">
+                <!-- Хлебные крошки -->
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">Главная</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url_for('thesaurus.index') }}">Тезаурус</a></li>
+                        {% if term.category %}
+                        <li class="breadcrumb-item"><a href="{{ url_for('thesaurus.category', category=term.category) }}">{{ term.category }}</a></li>
+                        {% endif %}
+                        <li class="breadcrumb-item active" aria-current="page">{{ term.term }}</li>
+                    </ol>
+                </nav>
+                
+                <!-- Заголовок и мета-информация -->
+                <header class="term-header">
+                    <h1 class="term-title">{{ term.term }}</h1>
+                    <div class="term-meta">
+                        {% if term.category %}
+                        <div class="term-category">
+                            <i class="fas fa-folder"></i>
+                            <span>{{ term.category }}</span>
+                        </div>
+                        {% endif %}
+                        <div class="term-date">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Добавлен: {{ term.created_at.strftime('%d.%m.%Y') }}</span>
+                        </div>
+                        {% if term.updated_at and term.updated_at != term.created_at %}
+                        <div class="term-updated">
+                            <i class="fas fa-edit"></i>
+                            <span>Обновлен: {{ term.updated_at.strftime('%d.%m.%Y') }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </header>
+                
+                <!-- Содержимое термина -->
+                <div class="term-content">
+                    {{ term.definition_html|safe }}
+                </div>
+                
+                <!-- Связанные термины -->
+                {% if related_terms %}
+                <div class="related-terms">
+                    <div class="section-header">
+                        <h3 class="cyber-heading">Связанные термины</h3>
+                        <div class="glow-line"></div>
+                    </div>
+                    <div class="related-terms-list">
+                        {% for related in related_terms %}
+                        <a href="{{ url_for('thesaurus.term', slug=related.slug) }}" class="related-term">
+                            {{ related.term }}
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Кнопки управления (для админа) -->
+                {% if current_user.is_admin %}
+                <div class="term-actions">
+                    <a href="{{ url_for('thesaurus.edit_term', slug=term.slug) }}" class="btn btn-cyber-secondary">
+                        <span class="btn-content"><i class="fas fa-edit me-2"></i>Редактировать</span>
+                    </a>
+                    <form action="{{ url_for('thesaurus.delete_term', slug=term.slug) }}" method="post" class="d-inline" onsubmit="return confirm('Вы уверены, что хотите удалить этот термин?');">
+                        <button type="submit" class="btn btn-cyber-danger">
+                            <span class="btn-content"><i class="fas fa-trash me-2"></i>Удалить</span>
+                        </button>
+                    </form>
+                </div>
+                {% endif %}
+            </article>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="sidebar">
+                <!-- Поиск по тезаурусу -->
+                <div class="sidebar-widget">
+                    <div class="section-header">
+                        <h3 class="cyber-heading">Поиск</h3>
+                        <div class="glow-line"></div>
+                    </div>
+                    <form action="{{ url_for('thesaurus.search') }}" method="get">
+                        <div class="input-group search-group">
+                            <input class="form-control cyber-input" type="search" name="q" placeholder="Поиск термина..." aria-label="Search">
+                            <button class="btn btn-cyber-primary search-btn" type="submit">
+                                <span class="btn-content"><i class="fas fa-search"></i></span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Категории -->
+                <div class="sidebar-widget">
+                    <div class="section-header">
+                        <h3 class="cyber-heading">Категории</h3>
+                        <div class="glow-line"></div>
+                    </div>
+                    <div class="category-chips">
+                        {% for category in categories %}
+                        <a href="{{ url_for('thesaurus.category', category=category) }}" class="category-chip {% if term.category == category %}active{% endif %}">
+                            {{ category }}
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <!-- Алфавитный указатель -->
+                <div class="sidebar-widget">
+                    <div class="section-header">
+                        <h3 class="cyber-heading">Алфавитный указатель</h3>
+                        <div class="glow-line"></div>
+                    </div>
+                    <div class="alphabet-nav sidebar-alphabet">
+                        {% set letters = get_alphabet() %}
+                        {% for letter in letters %}
+                        <a href="{{ url_for('thesaurus.index') }}#letter-{{ letter }}" class="alphabet-letter">
+                            {{ letter }}
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                {% if current_user.is_admin %}
+                <div class="sidebar-widget">
+                    <div class="section-header">
+                        <h3 class="cyber-heading">Управление</h3>
+                        <div class="glow-line"></div>
+                    </div>
+                    <div class="d-grid">
+                        <a href="{{ url_for('thesaurus.new_term') }}" class="btn btn-cyber-primary mb-2">
+                            <span class="btn-content"><i class="fas fa-plus me-2"></i>Добавить термин</span>
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

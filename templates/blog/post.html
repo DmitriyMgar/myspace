@@ -1,0 +1,328 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }} | Киберблог{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pygments.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="post-container">
+    <div class="row">
+        <div class="col-lg-8">
+            <article class="post-full">
+                <!-- Хлебные крошки -->
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">Главная</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url_for('blog.category', slug=category.slug) }}">{{ category.name }}</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ post.title }}</li>
+                    </ol>
+                </nav>
+                
+                <!-- Заголовок и мета-информация -->
+                <header class="post-header">
+                    <h1 class="post-title">{{ post.title }}</h1>
+                    <div class="post-meta">
+                        <div class="post-author">
+                            <img src="{{ url_for('static', filename=author.profile_image) }}" alt="{{ author.username }}" class="avatar-small">
+                            <span>{{ author.username }}</span>
+                        </div>
+                        <div class="post-date">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>{{ post.created_at.strftime('%d.%m.%Y') }}</span>
+                        </div>
+                        <div class="post-views">
+                            <i class="fas fa-eye"></i>
+                            <span>{{ post.view_count }}</span>
+                        </div>
+                    </div>
+                </header>
+                
+                <!-- Обложка статьи -->
+                {% if post.cover_image %}
+                <div class="post-cover">
+                    <img src="{{ url_for('static', filename=post.cover_image) }}" alt="{{ post.title }}" class="img-fluid">
+                </div>
+                {% endif %}
+                
+                <!-- Содержимое статьи -->
+                <div class="post-content">
+                    {{ post.content_html|safe }}
+                </div>
+                
+                <!-- Теги -->
+                {% if post.tags %}
+                <div class="post-tags">
+                    <i class="fas fa-tags"></i>
+                    {% for tag in post.tags %}
+                    <span class="post-tag">{{ tag }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                <!-- Реакции -->
+                <div class="post-reactions">
+                    <div class="reactions-title">Реакции:</div>
+                    <div class="reactions-container">
+                        {% for reaction_type in reaction_types %}
+                        <form action="{{ url_for('blog.react_to_post', post_id=post.id, reaction_type=reaction_type.name) }}" method="post" class="reaction-form">
+                            <button type="submit" class="btn btn-reaction {% if user_reaction == reaction_type.name %}active{% endif %}">
+                                <span class="reaction-emoji">{{ reaction_type.emoji }}</span>
+                                <span class="reaction-count">{{ reactions_count.get(reaction_type.name, 0) }}</span>
+                            </button>
+                        </form>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <!-- Кнопки управления (для автора или админа) -->
+                {% if current_user.is_authenticated and (current_user.is_admin or current_user.id == post.author_id) %}
+                <div class="post-actions">
+                    <a href="{{ url_for('blog.edit_post', slug=post.slug) }}" class="btn btn-cyber-secondary">
+                        <span class="btn-content"><i class="fas fa-edit me-2"></i>Редактировать</span>
+                    </a>
+                    <form action="{{ url_for('blog.delete_post', slug=post.slug) }}" method="post" class="d-inline" onsubmit="return confirm('Вы уверены, что хотите удалить эту статью?');">
+                        <button type="submit" class="btn btn-cyber-danger">
+                            <span class="btn-content"><i class="fas fa-trash me-2"></i>Удалить</span>
+                        </button>
+                    </form>
+                </div>
+                {% endif %}
+            </article>
+            
+            <!-- Комментарии -->
+            <div class="comments-section">
+                <div class="section-header">
+                    <h3 class="cyber-heading">Комментарии</h3>
+                    <div class="glow-line"></div>
+                </div>
+                
+                {% if current_user.is_authenticated %}
+                <div class="comment-form-container">
+                    <form method="POST" action="{{ url_for('blog.post', slug=post.slug) }}">
+                        {{ form.hidden_tag() }}
+                        <div class="form-group">
+                            {{ form.content(class="form-control cyber-input", rows=4, placeholder="Оставьте комментарий...") }}
+                            {% if form.content.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.content.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="d-grid mt-2">
+                            {{ form.submit(class="btn btn-cyber-primary") }}
+                        </div>
+                    </form>
+                </div>
+                {% else %}
+                <div class="comment-login-prompt">
+                    <p>Чтобы оставить комментарий, пожалуйста, <a href="{{ url_for('auth.login') }}" class="cyber-link">войдите</a> или <a href="{{ url_for('auth.register') }}" class="cyber-link">зарегистрируйтесь</a>.</p>
+                </div>
+                {% endif %}
+                
+                <div class="comments-list">
+                    {% if comments %}
+                        {% for comment in comments if not comment.parent_id %}
+                        <div class="comment" id="comment-{{ comment.id }}">
+                            <div class="comment-avatar">
+                                {% set comment_author = get_user(comment.author_id) %}
+                                <img src="{{ url_for('static', filename=comment_author.profile_image) }}" alt="{{ comment_author.username }}" class="avatar-small">
+                            </div>
+                            <div class="comment-content">
+                                <div class="comment-header">
+                                    <span class="comment-author">{{ comment_author.username }}</span>
+                                    <span class="comment-date">{{ comment.created_at.strftime('%d.%m.%Y %H:%M') }}</span>
+                                </div>
+                                <div class="comment-body">
+                                    {% if comment.is_deleted %}
+                                        <p class="deleted-comment">{{ comment.content }}</p>
+                                    {% else %}
+                                        {{ comment.content_html|safe }}
+                                    {% endif %}
+                                </div>
+                                <div class="comment-footer">
+                                    {% if current_user.is_authenticated and not comment.is_deleted %}
+                                    <button class="btn btn-sm btn-cyber-secondary reply-btn" data-comment-id="{{ comment.id }}">
+                                        <span class="btn-content"><i class="fas fa-reply me-1"></i>Ответить</span>
+                                    </button>
+                                    {% endif %}
+                                    
+                                    {% if current_user.is_authenticated and (current_user.is_admin or current_user.id == comment.author_id) and not comment.is_deleted %}
+                                    <form action="{{ url_for('blog.delete_comment', comment_id=comment.id) }}" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-cyber-danger">
+                                            <span class="btn-content"><i class="fas fa-trash me-1"></i>Удалить</span>
+                                        </button>
+                                    </form>
+                                    {% endif %}
+                                </div>
+                                
+                                <!-- Форма ответа (скрытая по умолчанию) -->
+                                <div class="reply-form" id="reply-form-{{ comment.id }}" style="display: none;">
+                                    <form method="POST" action="{{ url_for('blog.reply_comment', comment_id=comment.id) }}">
+                                        {{ form.hidden_tag() }}
+                                        <div class="form-group">
+                                            {{ form.content(class="form-control cyber-input", rows=3, placeholder="Ваш ответ...") }}
+                                        </div>
+                                        <div class="d-flex justify-content-end mt-2">
+                                            <button type="button" class="btn btn-sm btn-cyber-secondary cancel-reply-btn me-2" data-comment-id="{{ comment.id }}">
+                                                <span class="btn-content">Отмена</span>
+                                            </button>
+                                            <button type="submit" class="btn btn-sm btn-cyber-primary">
+                                                <span class="btn-content">Отправить</span>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                                
+                                <!-- Ответы на комментарий -->
+                                {% set replies = get_comment_replies(comment.id) %}
+                                {% if replies %}
+                                <div class="comment-replies">
+                                    {% for reply in replies %}
+                                    <div class="comment reply" id="comment-{{ reply.id }}">
+                                        <div class="comment-avatar">
+                                            {% set reply_author = get_user(reply.author_id) %}
+                                            <img src="{{ url_for('static', filename=reply_author.profile_image) }}" alt="{{ reply_author.username }}" class="avatar-small">
+                                        </div>
+                                        <div class="comment-content">
+                                            <div class="comment-header">
+                                                <span class="comment-author">{{ reply_author.username }}</span>
+                                                <span class="comment-date">{{ reply.created_at.strftime('%d.%m.%Y %H:%M') }}</span>
+                                            </div>
+                                            <div class="comment-body">
+                                                {% if reply.is_deleted %}
+                                                    <p class="deleted-comment">{{ reply.content }}</p>
+                                                {% else %}
+                                                    {{ reply.content_html|safe }}
+                                                {% endif %}
+                                            </div>
+                                            <div class="comment-footer">
+                                                {% if current_user.is_authenticated and (current_user.is_admin or current_user.id == reply.author_id) and not reply.is_deleted %}
+                                                <form action="{{ url_for('blog.delete_comment', comment_id=reply.id) }}" method="post" class="d-inline">
+                                                    <button type="submit" class="btn btn-sm btn-cyber-danger">
+                                                        <span class="btn-content"><i class="fas fa-trash me-1"></i>Удалить</span>
+                                                    </button>
+                                                </form>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="no-comments">
+                            <p>Пока нет комментариев. Будьте первым, кто оставит комментарий!</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="sidebar">
+                <!-- Об авторе -->
+                <div class="sidebar-widget">
+                    <div class="section-header">
+                        <h3 class="cyber-heading">Об авторе</h3>
+                        <div class="glow-line"></div>
+                    </div>
+                    <div class="author-card">
+                        <div class="author-avatar">
+                            <img src="{{ url_for('static', filename=author.profile_image) }}" alt="{{ author.username }}" class="avatar-medium">
+                        </div>
+                        <div class="author-info">
+                            <h4>{{ author.username }}</h4>
+                            <p class="author-date">В блоге с {{ author.created_at.strftime('%d.%m.%Y') }}</p>
+                            {% set author_posts_count = get_user_posts_count(author.id) %}
+                            <p class="author-stats">Статей: {{ author_posts_count }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Похожие статьи -->
+                <div class="sidebar-widget">
+                    <div class="section-header">
+                        <h3 class="cyber-heading">Похожие статьи</h3>
+                        <div class="glow-line"></div>
+                    </div>
+                    {% set related_posts = get_related_posts(post.id, post.category_id, 3) %}
+                    {% if related_posts %}
+                    <div class="related-posts">
+                        {% for related_post in related_posts %}
+                        <div class="related-post">
+                            {% if related_post.cover_image %}
+                            <div class="related-post-image">
+                                <a href="{{ url_for('blog.post', slug=related_post.slug) }}">
+                                    <img src="{{ url_for('static', filename=related_post.cover_image) }}" alt="{{ related_post.title }}">
+                                </a>
+                            </div>
+                            {% endif %}
+                            <div class="related-post-content">
+                                <h4><a href="{{ url_for('blog.post', slug=related_post.slug) }}">{{ related_post.title }}</a></h4>
+                                <div class="related-post-meta">
+                                    <span class="related-post-date">{{ related_post.created_at.strftime('%d.%m.%Y') }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p>Похожих статей не найдено.</p>
+                    {% endif %}
+                </div>
+                
+                <!-- Категории -->
+                <div class="sidebar-widget">
+                    <div class="section-header">
+                        <h3 class="cyber-heading">Категории</h3>
+                        <div class="glow-line"></div>
+                    </div>
+                    <ul class="category-list">
+                        {% for cat in categories %}
+                        <li>
+                            <a href="{{ url_for('blog.category', slug=cat.slug) }}" class="category-item {% if cat.id == category.id %}active{% endif %}">
+                                <i class="fas fa-{{ cat.icon }} me-2"></i>
+                                <span>{{ cat.name }}</span>
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Обработчики для форм ответов на комментарии
+        const replyButtons = document.querySelectorAll('.reply-btn');
+        const cancelReplyButtons = document.querySelectorAll('.cancel-reply-btn');
+        
+        replyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const commentId = this.getAttribute('data-comment-id');
+                document.getElementById(`reply-form-${commentId}`).style.display = 'block';
+                this.style.display = 'none';
+            });
+        });
+        
+        cancelReplyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const commentId = this.getAttribute('data-comment-id');
+                document.getElementById(`reply-form-${commentId}`).style.display = 'none';
+                document.querySelector(`.reply-btn[data-comment-id="${commentId}"]`).style.display = 'inline-block';
+            });
+        });
+    });
+</script>
+{% endblock %} 

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}500 - Внутренняя ошибка сервера | Киберблог{% endblock %}
+
+{% block content %}
+<div class="error-page">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h1 class="glitch-text">
+                <span class="glitch-text-item">500</span>
+            </h1>
+            <div class="error-message">
+                <p class="lead">ВНУТРЕННЯЯ ОШИБКА СЕРВЕРА</p>
+                <p>Что-то пошло не так. Мы уже работаем над исправлением проблемы.</p>
+                <div class="error-code">
+                    <pre class="error-code-text">
+FATAL_ERROR: 0x0000001E
+SYSTEM_MALFUNCTION
+KERNEL_PANIC
+                    </pre>
+                </div>
+                <a href="{{ url_for('main.index') }}" class="btn btn-cyber-primary mt-4">
+                    <span class="btn-content"><i class="fas fa-home me-2"></i>На главную</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Анимация мерцания текста
+    document.addEventListener('DOMContentLoaded', function() {
+        const errorText = document.querySelector('.error-code-text');
+        setInterval(() => {
+            errorText.classList.toggle('flicker');
+        }, 1500);
+    });
+</script>
+{% endblock %} 

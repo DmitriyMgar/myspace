@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Тезаурус | Киберблог{% endblock %}
+
+{% block content %}
+<div class="thesaurus-container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="thesaurus-header">
+                <h1 class="cyber-heading">Тезаурус</h1>
+                <div class="glow-line"></div>
+                <p class="thesaurus-description">Словарь терминов и определений из мира технологий, науки и киберпанка.</p>
+            </div>
+            
+            <!-- Поиск по тезаурусу -->
+            <div class="thesaurus-search">
+                <form action="{{ url_for('thesaurus.search') }}" method="get">
+                    <div class="input-group search-group">
+                        <input class="form-control cyber-input" type="search" name="q" placeholder="Поиск термина..." aria-label="Search">
+                        <button class="btn btn-cyber-primary search-btn" type="submit">
+                            <span class="btn-content"><i class="fas fa-search"></i></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Категории терминов -->
+            {% if categories %}
+            <div class="thesaurus-categories">
+                <div class="section-header">
+                    <h2 class="cyber-heading">Категории</h2>
+                    <div class="glow-line"></div>
+                </div>
+                <div class="category-chips">
+                    {% for category in categories %}
+                    <a href="{{ url_for('thesaurus.category', category=category) }}" class="category-chip">
+                        {{ category }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Алфавитный указатель -->
+            <div class="thesaurus-alphabet">
+                <div class="section-header">
+                    <h2 class="cyber-heading">Алфавитный указатель</h2>
+                    <div class="glow-line"></div>
+                </div>
+                <div class="alphabet-nav">
+                    {% for letter in sorted_letters %}
+                    <a href="#letter-{{ letter }}" class="alphabet-letter">{{ letter }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <!-- Список терминов по буквам -->
+            <div class="thesaurus-terms">
+                {% for letter in sorted_letters %}
+                <div class="letter-section" id="letter-{{ letter }}">
+                    <div class="letter-header">
+                        <h2 class="letter">{{ letter }}</h2>
+                        <div class="letter-line"></div>
+                    </div>
+                    <div class="terms-list">
+                        {% for term in terms_by_letter[letter] %}
+                        <div class="term-item">
+                            <a href="{{ url_for('thesaurus.term', slug=term.slug) }}" class="term-link">
+                                <h3 class="term-name">{{ term.term }}</h3>
+                                <div class="term-preview">
+                                    <p>{{ term.definition[:100] }}{% if term.definition|length > 100 %}...{% endif %}</p>
+                                </div>
+                            </a>
+                            <div class="term-meta">
+                                {% if term.category %}
+                                <span class="term-category">{{ term.category }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            {% if current_user.is_admin %}
+            <div class="admin-actions mt-4">
+                <a href="{{ url_for('thesaurus.new_term') }}" class="btn btn-cyber-primary">
+                    <span class="btn-content"><i class="fas fa-plus me-2"></i>Добавить термин</span>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Плавная прокрутка к буквам
+        const alphabetLinks = document.querySelectorAll('.alphabet-letter');
+        alphabetLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    });
+</script>
+{% endblock %} 

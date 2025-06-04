@@ -1,0 +1,280 @@
+/* ТЕМНАЯ ТЕМА ДЛЯ КИБЕРБЛОГА */
+
+/* Переменные темной темы */
+.dark-theme {
+    --primary-color: #00ff9d;
+    --secondary-color: #0ff;
+    --accent-color: #ff00a0;
+    --background-color: #0a0a0c;
+    --background-alt-color: #12151a;
+    --text-color: #e0e0e0;
+    --text-muted: #8a8a8a;
+    --border-color: #2a2a3a;
+    
+    --success-color: #00ff9d;
+    --warning-color: #ffcc00;
+    --danger-color: #ff3860;
+    --info-color: #0ff;
+}
+
+/* Основные стили для темной темы */
+.dark-theme body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    background-image: linear-gradient(to bottom, rgba(10, 10, 12, 0.95), rgba(10, 10, 12, 0.95)), 
+                      url('../img/grid-bg.png');
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+/* Навигация для темной темы */
+.dark-theme .navbar {
+    background-color: rgba(10, 10, 12, 0.9);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Карточки и контейнеры для темной темы */
+.dark-theme .card,
+.dark-theme .sidebar-widget,
+.dark-theme .post-card,
+.dark-theme .auth-card,
+.dark-theme .editor-sidebar,
+.dark-theme .comment {
+    background-color: rgba(18, 21, 26, 0.8);
+    border: 1px solid var(--border-color);
+}
+
+/* Формы для темной темы */
+.dark-theme .form-control,
+.dark-theme .form-select {
+    background-color: rgba(18, 21, 26, 0.8);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+.dark-theme .form-control:focus,
+.dark-theme .form-select:focus {
+    background-color: rgba(18, 21, 26, 0.9);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(0, 255, 157, 0.25);
+}
+
+/* Таблицы для темной темы */
+.dark-theme .table {
+    color: var(--text-color);
+}
+
+.dark-theme .table-cyber thead th {
+    background-color: rgba(18, 21, 26, 0.8);
+    border-bottom: 2px solid var(--border-color);
+    color: var(--primary-color);
+}
+
+.dark-theme .table-cyber tbody tr {
+    background-color: rgba(18, 21, 26, 0.4);
+}
+
+.dark-theme .table-cyber tbody tr:hover {
+    background-color: rgba(0, 255, 157, 0.05);
+}
+
+.dark-theme .table-cyber td {
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Модальные окна для темной темы */
+.dark-theme .modal-content {
+    background-color: var(--background-alt-color);
+    border: 1px solid var(--border-color);
+}
+
+.dark-theme .modal-header {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.dark-theme .modal-footer {
+    border-top: 1px solid var(--border-color);
+}
+
+/* Дропдауны для темной темы */
+.dark-theme .dropdown-menu {
+    background-color: var(--background-alt-color);
+    border: 1px solid var(--border-color);
+}
+
+.dark-theme .dropdown-item {
+    color: var(--text-color);
+}
+
+.dark-theme .dropdown-item:hover {
+    background-color: rgba(0, 255, 157, 0.1);
+    color: var(--primary-color);
+}
+
+/* Пагинация для темной темы */
+.dark-theme .page-link {
+    background-color: rgba(18, 21, 26, 0.8);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+.dark-theme .page-link:hover {
+    background-color: rgba(0, 255, 157, 0.1);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.dark-theme .page-item.active .page-link {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--background-color);
+}
+
+/* Хлебные крошки для темной темы */
+.dark-theme .breadcrumb {
+    background-color: rgba(18, 21, 26, 0.4);
+}
+
+/* Эффекты для темной темы */
+.dark-theme .glow-text {
+    text-shadow: 0 0 5px var(--primary-color);
+}
+
+/* Код и блоки кода для темной темы */
+.dark-theme code {
+    color: var(--secondary-color);
+    background-color: rgba(0, 255, 255, 0.1);
+    padding: 0.2rem 0.4rem;
+    border-radius: var(--border-radius);
+}
+
+.dark-theme pre {
+    background-color: rgba(18, 21, 26, 0.8);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+}
+
+.dark-theme .error-code-text {
+    font-family: var(--font-main);
+    color: var(--danger-color);
+    background-color: rgba(18, 21, 26, 0.8);
+    border: 1px solid var(--border-color);
+    padding: 1rem;
+    text-shadow: 0 0 5px var(--danger-color);
+}
+
+/* Специфические компоненты для темной темы */
+.dark-theme .post-content {
+    color: var(--text-color);
+}
+
+.dark-theme .comment-body {
+    color: var(--text-color);
+}
+
+.dark-theme .term-content {
+    color: var(--text-color);
+}
+
+/* Админ панель для темной темы */
+.dark-theme .admin-sidebar {
+    background-color: rgba(18, 21, 26, 0.8);
+    border: 1px solid var(--border-color);
+}
+
+.dark-theme .admin-menu-item a {
+    color: var(--text-color);
+}
+
+.dark-theme .admin-menu-item a:hover {
+    background-color: rgba(0, 255, 157, 0.1);
+    color: var(--primary-color);
+}
+
+.dark-theme .admin-menu-item.active a {
+    background-color: rgba(0, 255, 157, 0.1);
+    color: var(--primary-color);
+    border-left: 3px solid var(--primary-color);
+}
+
+.dark-theme .stats-card {
+    background-color: rgba(18, 21, 26, 0.8);
+    border: 1px solid var(--border-color);
+}
+
+/* Редактор для темной темы */
+.dark-theme .EasyMDEContainer .CodeMirror {
+    background-color: rgba(18, 21, 26, 0.8);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+.dark-theme .editor-toolbar {
+    background-color: rgba(18, 21, 26, 0.8);
+    border: 1px solid var(--border-color);
+}
+
+.dark-theme .editor-toolbar button {
+    color: var(--text-color) !important;
+}
+
+.dark-theme .editor-toolbar button:hover {
+    background-color: rgba(0, 255, 157, 0.1);
+    color: var(--primary-color) !important;
+}
+
+.dark-theme .editor-toolbar.disabled-for-preview button:not(.no-disable) {
+    color: var(--text-muted) !important;
+}
+
+/* Select2 для темной темы */
+.dark-theme .select2-container--bootstrap-5 .select2-selection {
+    background-color: rgba(18, 21, 26, 0.8);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+.dark-theme .select2-container--bootstrap-5 .select2-dropdown {
+    background-color: var(--background-alt-color);
+    border: 1px solid var(--border-color);
+}
+
+.dark-theme .select2-container--bootstrap-5 .select2-results__option {
+    color: var(--text-color);
+}
+
+.dark-theme .select2-container--bootstrap-5 .select2-results__option--highlighted {
+    background-color: rgba(0, 255, 157, 0.1);
+    color: var(--primary-color);
+}
+
+/* Алерты для темной темы */
+.dark-theme .alert {
+    border: 1px solid var(--border-color);
+}
+
+.dark-theme .alert-success {
+    background-color: rgba(0, 255, 157, 0.1);
+    color: var(--success-color);
+    border-color: var(--success-color);
+}
+
+.dark-theme .alert-danger {
+    background-color: rgba(255, 56, 96, 0.1);
+    color: var(--danger-color);
+    border-color: var(--danger-color);
+}
+
+.dark-theme .alert-warning {
+    background-color: rgba(255, 204, 0, 0.1);
+    color: var(--warning-color);
+    border-color: var(--warning-color);
+}
+
+.dark-theme .alert-info {
+    background-color: rgba(0, 255, 255, 0.1);
+    color: var(--info-color);
+    border-color: var(--info-color);
+} 

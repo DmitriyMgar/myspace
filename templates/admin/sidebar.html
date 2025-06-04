@@ -1,0 +1,51 @@
+<div class="admin-sidebar">
+    <div class="admin-sidebar-header">
+        <h3 class="cyber-heading">Админ-панель</h3>
+        <div class="glow-line"></div>
+    </div>
+    <nav class="admin-nav">
+        <ul class="admin-menu">
+            <li class="admin-menu-item {% if request.endpoint == 'admin.index' %}active{% endif %}">
+                <a href="{{ url_for('admin.index') }}" class="admin-menu-link">
+                    <i class="fas fa-tachometer-alt me-2"></i>
+                    <span>Панель управления</span>
+                </a>
+            </li>
+            <li class="admin-menu-item {% if request.endpoint == 'admin.users' %}active{% endif %}">
+                <a href="{{ url_for('admin.users') }}" class="admin-menu-link">
+                    <i class="fas fa-users me-2"></i>
+                    <span>Пользователи</span>
+                </a>
+            </li>
+            <li class="admin-menu-item {% if request.endpoint == 'admin.posts' %}active{% endif %}">
+                <a href="{{ url_for('admin.posts') }}" class="admin-menu-link">
+                    <i class="fas fa-file-alt me-2"></i>
+                    <span>Статьи</span>
+                </a>
+            </li>
+            <li class="admin-menu-item {% if request.endpoint == 'admin.categories' %}active{% endif %}">
+                <a href="{{ url_for('admin.categories') }}" class="admin-menu-link">
+                    <i class="fas fa-folder me-2"></i>
+                    <span>Категории</span>
+                </a>
+            </li>
+            <li class="admin-menu-item {% if request.endpoint == 'admin.comments' %}active{% endif %}">
+                <a href="{{ url_for('admin.comments') }}" class="admin-menu-link">
+                    <i class="fas fa-comments me-2"></i>
+                    <span>Комментарии</span>
+                </a>
+            </li>
+            <li class="admin-menu-item {% if request.endpoint == 'admin.terms' %}active{% endif %}">
+                <a href="{{ url_for('admin.terms') }}" class="admin-menu-link">
+                    <i class="fas fa-book me-2"></i>
+                    <span>Тезаурус</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="admin-sidebar-footer">
+        <a href="{{ url_for('main.index') }}" class="btn btn-cyber-secondary btn-sm">
+            <span class="btn-content"><i class="fas fa-home me-2"></i>На главную</span>
+        </a>
+    </div>
+</div> 

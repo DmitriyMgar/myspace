@@ -1,0 +1,853 @@
+/* ОСНОВНЫЕ СТИЛИ КИБЕРБЛОГА */
+
+/* Переменные */
+:root {
+    /* Основные цвета */
+    --primary-color: #00ff9d;
+    --secondary-color: #0ff;
+    --accent-color: #ff00a0;
+    --background-color: #0a0a0c;
+    --background-alt-color: #12151a;
+    --text-color: #e0e0e0;
+    --text-muted: #8a8a8a;
+    --border-color: #2a2a3a;
+    
+    /* Цвета для элементов */
+    --success-color: #00ff9d;
+    --warning-color: #ffcc00;
+    --danger-color: #ff3860;
+    --info-color: #0ff;
+    
+    /* Шрифты */
+    --font-main: 'Share Tech Mono', monospace;
+    --font-heading: 'Orbitron', sans-serif;
+    
+    /* Размеры */
+    --border-radius: 4px;
+    --glow-size: 10px;
+    --transition-speed: 0.3s;
+}
+
+/* Основные стили */
+body {
+    font-family: var(--font-main);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    position: relative;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Эффект шума */
+.noise-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../img/noise.png');
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+/* Заголовки */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.cyber-heading {
+    position: relative;
+    display: inline-block;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 5px var(--primary-color);
+}
+
+/* Линии с подсветкой */
+.glow-line {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+    margin: 0.5rem 0 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.glow-line::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 157, 0.8), transparent);
+    animation: glow-line-animation 3s infinite;
+}
+
+@keyframes glow-line-animation {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* Ссылки */
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: all var(--transition-speed) ease;
+}
+
+a:hover {
+    color: var(--secondary-color);
+    text-shadow: 0 0 5px var(--secondary-color);
+}
+
+.cyber-link {
+    position: relative;
+    color: var(--primary-color);
+    text-decoration: none;
+    padding-bottom: 2px;
+    transition: all var(--transition-speed) ease;
+}
+
+.cyber-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--primary-color);
+    transition: width var(--transition-speed) ease;
+}
+
+.cyber-link:hover {
+    color: var(--secondary-color);
+    text-shadow: 0 0 5px var(--secondary-color);
+}
+
+.cyber-link:hover::after {
+    width: 100%;
+    background-color: var(--secondary-color);
+    box-shadow: 0 0 5px var(--secondary-color);
+}
+
+/* Кнопки */
+.btn {
+    border-radius: var(--border-radius);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: var(--font-heading);
+    font-weight: 500;
+    transition: all var(--transition-speed) ease;
+    position: relative;
+    overflow: hidden;
+    border: none;
+}
+
+.btn-cyber-primary {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    box-shadow: 0 0 5px var(--primary-color);
+    position: relative;
+    z-index: 1;
+}
+
+.btn-cyber-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 157, 0.2), transparent);
+    transition: left 0.5s ease;
+    z-index: -1;
+}
+
+.btn-cyber-primary:hover {
+    color: var(--background-color);
+    background-color: var(--primary-color);
+    box-shadow: 0 0 10px var(--primary-color);
+}
+
+.btn-cyber-primary:hover::before {
+    left: 100%;
+}
+
+.btn-cyber-secondary {
+    background-color: transparent;
+    color: var(--secondary-color);
+    border: 1px solid var(--secondary-color);
+    box-shadow: 0 0 5px var(--secondary-color);
+    position: relative;
+    z-index: 1;
+}
+
+.btn-cyber-secondary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+    z-index: -1;
+}
+
+.btn-cyber-secondary:hover {
+    color: var(--background-color);
+    background-color: var(--secondary-color);
+    box-shadow: 0 0 10px var(--secondary-color);
+}
+
+.btn-cyber-secondary:hover::before {
+    left: 100%;
+}
+
+.btn-cyber-danger {
+    background-color: transparent;
+    color: var(--danger-color);
+    border: 1px solid var(--danger-color);
+    box-shadow: 0 0 5px var(--danger-color);
+    position: relative;
+    z-index: 1;
+}
+
+.btn-cyber-danger::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 56, 96, 0.2), transparent);
+    transition: left 0.5s ease;
+    z-index: -1;
+}
+
+.btn-cyber-danger:hover {
+    color: var(--background-color);
+    background-color: var(--danger-color);
+    box-shadow: 0 0 10px var(--danger-color);
+}
+
+.btn-cyber-danger:hover::before {
+    left: 100%;
+}
+
+/* Формы */
+.form-control, .form-select {
+    background-color: rgba(18, 21, 26, 0.8);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: var(--border-radius);
+    transition: all var(--transition-speed) ease;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: rgba(18, 21, 26, 0.9);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(0, 255, 157, 0.25);
+    color: var(--text-color);
+}
+
+.cyber-input {
+    position: relative;
+    border: 1px solid var(--border-color);
+    background-color: rgba(18, 21, 26, 0.8);
+}
+
+.cyber-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px var(--primary-color);
+}
+
+.cyber-input-group {
+    margin-bottom: 1.5rem;
+}
+
+.cyber-checkbox .form-check-input {
+    background-color: rgba(18, 21, 26, 0.8);
+    border: 1px solid var(--border-color);
+}
+
+.cyber-checkbox .form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.cyber-checkbox .form-check-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(0, 255, 157, 0.25);
+}
+
+/* Навигация */
+.navbar {
+    background-color: rgba(10, 10, 12, 0.9);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.75rem 1rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.navbar-brand {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--primary-color) !important;
+    letter-spacing: 2px;
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    color: var(--text-color);
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    transition: all var(--transition-speed) ease;
+}
+
+.nav-link:hover {
+    color: var(--primary-color);
+    text-shadow: 0 0 5px var(--primary-color);
+}
+
+.dropdown-menu {
+    background-color: var(--background-alt-color);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.dropdown-item {
+    color: var(--text-color);
+    transition: all var(--transition-speed) ease;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(0, 255, 157, 0.1);
+    color: var(--primary-color);
+}
+
+/* Поиск */
+.search-group {
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    background-color: rgba(18, 21, 26, 0.8);
+}
+
+.search-input {
+    border: none;
+    background-color: transparent;
+    color: var(--text-color);
+}
+
+.search-input:focus {
+    box-shadow: none;
+    background-color: transparent;
+}
+
+.search-btn {
+    background-color: transparent;
+    border: none;
+    color: var(--primary-color);
+    transition: all var(--transition-speed) ease;
+}
+
+.search-btn:hover {
+    color: var(--secondary-color);
+    text-shadow: 0 0 5px var(--secondary-color);
+}
+
+/* Аватары */
+.avatar-small {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--border-color);
+}
+
+.avatar-medium {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--border-color);
+}
+
+.avatar-large {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--border-color);
+    box-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
+}
+
+/* Статусы */
+.status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--border-radius);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.status-badge.admin {
+    background-color: rgba(255, 0, 160, 0.2);
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+}
+
+.status-badge.user {
+    background-color: rgba(0, 255, 255, 0.1);
+    color: var(--secondary-color);
+    border: 1px solid var(--secondary-color);
+}
+
+.status-badge.published {
+    background-color: rgba(0, 255, 157, 0.1);
+    color: var(--success-color);
+    border: 1px solid var(--success-color);
+}
+
+.status-badge.draft {
+    background-color: rgba(255, 204, 0, 0.1);
+    color: var(--warning-color);
+    border: 1px solid var(--warning-color);
+}
+
+/* Таблицы */
+.table-cyber {
+    color: var(--text-color);
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table-cyber thead th {
+    background-color: rgba(18, 21, 26, 0.8);
+    border-bottom: 2px solid var(--border-color);
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    padding: 1rem;
+}
+
+.table-cyber tbody tr {
+    background-color: rgba(18, 21, 26, 0.4);
+    transition: all var(--transition-speed) ease;
+}
+
+.table-cyber tbody tr:hover {
+    background-color: rgba(0, 255, 157, 0.05);
+}
+
+.table-cyber td {
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.75rem 1rem;
+}
+
+/* Эффект глитча для текста */
+.glitch-text {
+    position: relative;
+    color: var(--primary-color);
+    letter-spacing: 3px;
+    text-shadow: 0 0 5px var(--primary-color);
+}
+
+.glitch-text::before,
+.glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+}
+
+.glitch-text::before {
+    color: var(--accent-color);
+    z-index: -1;
+    animation: glitch-animation 2s infinite;
+}
+
+.glitch-text::after {
+    color: var(--secondary-color);
+    z-index: -2;
+    animation: glitch-animation 3s infinite;
+}
+
+@keyframes glitch-animation {
+    0% {
+        transform: translate(0);
+    }
+    20% {
+        transform: translate(-2px, 2px);
+    }
+    40% {
+        transform: translate(-2px, -2px);
+    }
+    60% {
+        transform: translate(2px, 2px);
+    }
+    80% {
+        transform: translate(2px, -2px);
+    }
+    100% {
+        transform: translate(0);
+    }
+}
+
+/* Эффект печатающегося текста */
+.typewriter-text {
+    overflow: hidden;
+    border-right: 2px solid var(--primary-color);
+    white-space: nowrap;
+    margin: 0 auto;
+    letter-spacing: 2px;
+    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+    max-width: fit-content;
+}
+
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: var(--primary-color) }
+}
+
+/* Футер */
+.footer {
+    background-color: rgba(10, 10, 12, 0.95);
+    border-top: 1px solid var(--border-color);
+    padding: 2rem 0;
+    margin-top: 3rem;
+    color: var(--text-color);
+}
+
+.footer h3, .footer h5 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.footer a {
+    color: var(--text-color);
+    transition: all var(--transition-speed) ease;
+}
+
+.footer a:hover {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.social-icons {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    transition: all var(--transition-speed) ease;
+}
+
+.social-icon:hover {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 10px var(--primary-color);
+}
+
+/* Хлебные крошки */
+.breadcrumb {
+    background-color: rgba(18, 21, 26, 0.4);
+    padding: 0.75rem 1rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 1.5rem;
+}
+
+.breadcrumb-item {
+    color: var(--text-muted);
+}
+
+.breadcrumb-item.active {
+    color: var(--primary-color);
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    color: var(--text-muted);
+}
+
+/* Пагинация */
+.pagination {
+    margin-top: 2rem;
+}
+
+.page-link {
+    background-color: rgba(18, 21, 26, 0.8);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    transition: all var(--transition-speed) ease;
+}
+
+.page-link:hover {
+    background-color: rgba(0, 255, 157, 0.1);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.page-item.active .page-link {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--background-color);
+}
+
+/* Адаптивность */
+@media (max-width: 992px) {
+    .navbar-collapse {
+        background-color: var(--background-alt-color);
+        padding: 1rem;
+        border-radius: var(--border-radius);
+        margin-top: 0.5rem;
+        border: 1px solid var(--border-color);
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 2.5rem;
+    }
+    
+    .sidebar {
+        margin-top: 2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+
+/* Компоненты главной страницы */
+.hero-section {
+    text-align: center;
+    padding: 4rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+}
+
+.hero-section .lead {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: var(--text-color);
+}
+
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+/* Карточки постов */
+.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.post-card {
+    background-color: rgba(18, 21, 26, 0.8);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    transition: all var(--transition-speed) ease;
+    height: 100%;
+}
+
+.post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 255, 157, 0.1);
+    border-color: var(--primary-color);
+}
+
+.post-card-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.post-image {
+    height: 200px;
+    overflow: hidden;
+}
+
+.post-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all var(--transition-speed) ease;
+}
+
+.post-card:hover .post-image img {
+    transform: scale(1.05);
+}
+
+.post-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.post-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.post-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+}
+
+.post-title a {
+    color: var(--text-color);
+    transition: all var(--transition-speed) ease;
+}
+
+.post-title a:hover {
+    color: var(--primary-color);
+    text-shadow: 0 0 5px var(--primary-color);
+}
+
+.post-excerpt {
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    flex-grow: 1;
+}
+
+.post-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+}
+
+.post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.post-tag {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    background-color: rgba(0, 255, 157, 0.1);
+    border: 1px solid var(--primary-color);
+    border-radius: var(--border-radius);
+    font-size: 0.75rem;
+    color: var(--primary-color);
+}
+
+/* Боковая панель */
+.sidebar {
+    position: sticky;
+    top: 2rem;
+}
+
+.sidebar-widget {
+    background-color: rgba(18, 21, 26, 0.8);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.category-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.category-list li {
+    margin-bottom: 0.5rem;
+}
+
+.category-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: var(--border-radius);
+    transition: all var(--transition-speed) ease;
+    color: var(--text-color);
+}
+
+.category-item:hover {
+    background-color: rgba(0, 255, 157, 0.1);
+    color: var(--primary-color);
+}
+
+.category-item.active {
+    background-color: rgba(0, 255, 157, 0.1);
+    color: var(--primary-color);
+    border-left: 3px solid var(--primary-color);
+}
+
+/* Анимации при прокрутке */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Утилиты */
+.flicker {
+    animation: flicker 0.5s infinite alternate;
+}
+
+@keyframes flicker {
+    0% { opacity: 1; }
+    25% { opacity: 0.5; }
+    50% { opacity: 0.8; }
+    75% { opacity: 0.2; }
+    100% { opacity: 1; }
+} 
