@@ -45,15 +45,18 @@ function initMatrixRain() {
     // Инициализация капель
     function initDrops() {
         drops = [];
-        const columns = Math.floor(canvas.width / 20); // Ширина символа примерно 20px
+        const columns = Math.floor(canvas.width / 30); // Увеличиваем расстояние между каплями
         
         for (let i = 0; i < columns; i++) {
-            drops.push({
-                x: i * 20,
-                y: Math.random() * -100,
-                speed: Math.random() * 2 + 1,
-                length: Math.floor(Math.random() * 15) + 5
-            });
+            // Добавляем каплю только с 60% вероятностью для создания более разреженного эффекта
+            if (Math.random() < 0.6) {
+                drops.push({
+                    x: i * 30,
+                    y: Math.random() * -100,
+                    speed: Math.random() * 1.5 + 0.8, // Немного снижаем скорость
+                    length: Math.floor(Math.random() * 10) + 5 // Уменьшаем длину капель
+                });
+            }
         }
     }
     
@@ -61,8 +64,8 @@ function initMatrixRain() {
     
     // Функция отрисовки
     function draw() {
-        // Полупрозрачный черный фон для создания эффекта следа
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        // Полупрозрачный черный фон для создания эффекта следа (более темный)
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
         // Настройки для символов
@@ -74,13 +77,13 @@ function initMatrixRain() {
             
             // Отрисовка символов в капле
             for (let j = 0; j < drop.length; j++) {
-                // Первый символ ярче (голова капли)
+                // Первый символ ярче (голова капли), но затемненный
                 if (j === 0) {
-                    ctx.fillStyle = '#0f0'; // Ярко-зеленый
+                    ctx.fillStyle = 'rgba(0, 180, 0, 0.7)'; // Затемненный зеленый
                 } else {
-                    // Остальные символы тускнеют с расстоянием
-                    const alpha = 1 - j / drop.length;
-                    ctx.fillStyle = `rgba(0, 255, 0, ${alpha})`;
+                    // Остальные символы тускнеют с расстоянием и более прозрачные
+                    const alpha = (1 - j / drop.length) * 0.5; // Уменьшаем прозрачность на 50%
+                    ctx.fillStyle = `rgba(0, 180, 0, ${alpha})`;
                 }
                 
                 // Случайный символ
