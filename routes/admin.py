@@ -7,8 +7,10 @@ from models.comment import Comment
 from models.thesaurus import Term
 from forms.admin import CategoryForm, UserAccessForm
 from bson.objectid import ObjectId
+from pymongo import DESCENDING
 
 admin = Blueprint('admin', __name__)
+admin_bp = admin  # Добавляем алиас для соответствия импорту в app.py
 
 # Декоратор для проверки прав администратора
 def admin_required(func):

@@ -2,115 +2,56 @@ from flask import Blueprint, render_template, request, redirect, url_for, curren
 from flask_login import current_user
 from models.post import Post
 from models.category import Category
+from pymongo import DESCENDING
 
 main = Blueprint('main', __name__)
+main_bp = main  # Добавляем алиас для соответствия импорту в app.py
 
 @main.route('/')
 def index():
-    """Главная страница блога"""
-    page = request.args.get('page', 1, type=int)
-    per_page = current_app.config['POSTS_PER_PAGE']
+    """Главная страница"""
+    # Получаем последние статьи из базы данных
+    client = current_app.config['MONGO_CLIENT']
+    db = client.get_database()
+    latest_posts = list(db.posts.find({'status': 'published'}).sort('created_at', DESCENDING).limit(5))
     
-    # Получаем опубликованные статьи
-    filter_criteria = {'is_published': True}
-    
-    # Если пользователь не авторизован, исключаем приватные категории
-    if not current_user.is_authenticated or not current_user.is_admin:
-        # Получаем ID всех приватных категорий
-        private_categories = [cat.id for cat in Category.get_all(current_app.db, include_private=True) 
-                             if cat.is_private]
-        
-        # Если пользователь авторизован, но не админ, проверяем доступ к приватным категориям
-        if current_user.is_authenticated:
-            allowed_private_categories = current_user.allowed_categories
-            # Исключаем категории, к которым у пользователя нет доступа
-            private_categories = [cat_id for cat_id in private_categories 
-                                 if cat_id not in allowed_private_categories]
-        
-        if private_categories:
-            filter_criteria['category_id'] = {'$nin': [ObjectId(cat_id) for cat_id in private_categories]}
-    
-    # Получаем статьи с пагинацией
-    posts_data = Post.get_posts(
-        current_app.db,
-        filter_criteria=filter_criteria,
-        page=page,
-        per_page=per_page
-    )
-    
-    # Получаем все категории для меню
-    categories = Category.get_main_categories(current_app.db)
-    
-    return render_template(
-        'index.html',
-        posts=posts_data['posts'],
-        total=posts_data['total'],
-        page=page,
-        per_page=per_page,
-        pages=posts_data['pages'],
-        categories=categories
-    )
+    return render_template('index.html', posts=latest_posts)
 
 @main.route('/search')
 def search():
-    """Поиск по блогу"""
+    """Поиск по сайту"""
     query = request.args.get('q', '')
     if not query:
-        return redirect(url_for('main.index'))
+        return render_template('search.html', results=[], query='')
     
-    page = request.args.get('page', 1, type=int)
-    per_page = current_app.config['POSTS_PER_PAGE']
+    client = current_app.config['MONGO_CLIENT']
+    db = client.get_database()
     
-    # Создаем текстовый индекс для поиска
-    current_app.db.posts.create_index([
-        ('title', 'text'), 
-        ('content', 'text')
-    ])
+    # Поиск в статьях
+    post_results = list(db.posts.find({
+        '$and': [
+            {'status': 'published'},
+            {'$or': [
+                {'title': {'$regex': query, '$options': 'i'}},
+                {'content': {'$regex': query, '$options': 'i'}}
+            ]}
+        ]
+    }).limit(10))
     
-    # Формируем критерии поиска
-    filter_criteria = {
-        '$text': {'$search': query},
-        'is_published': True
+    # Поиск в терминах
+    term_results = list(db.terms.find({
+        '$or': [
+            {'name': {'$regex': query, '$options': 'i'}},
+            {'definition': {'$regex': query, '$options': 'i'}}
+        ]
+    }).limit(10))
+    
+    results = {
+        'posts': post_results,
+        'terms': term_results
     }
     
-    # Если пользователь не авторизован, исключаем приватные категории
-    if not current_user.is_authenticated or not current_user.is_admin:
-        # Получаем ID всех приватных категорий
-        private_categories = [cat.id for cat in Category.get_all(current_app.db, include_private=True) 
-                             if cat.is_private]
-        
-        # Если пользователь авторизован, но не админ, проверяем доступ к приватным категориям
-        if current_user.is_authenticated:
-            allowed_private_categories = current_user.allowed_categories
-            # Исключаем категории, к которым у пользователя нет доступа
-            private_categories = [cat_id for cat_id in private_categories 
-                                 if cat_id not in allowed_private_categories]
-        
-        if private_categories:
-            filter_criteria['category_id'] = {'$nin': [ObjectId(cat_id) for cat_id in private_categories]}
-    
-    # Получаем статьи с пагинацией, сортируя по релевантности
-    posts_data = Post.get_posts(
-        current_app.db,
-        filter_criteria=filter_criteria,
-        sort_by=[('score', {'$meta': 'textScore'})],
-        page=page,
-        per_page=per_page
-    )
-    
-    # Получаем все категории для меню
-    categories = Category.get_main_categories(current_app.db)
-    
-    return render_template(
-        'search.html',
-        posts=posts_data['posts'],
-        total=posts_data['total'],
-        page=page,
-        per_page=per_page,
-        pages=posts_data['pages'],
-        query=query,
-        categories=categories
-    )
+    return render_template('search.html', results=results, query=query)
 
 @main.route('/about')
 def about():

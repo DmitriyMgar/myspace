@@ -2,8 +2,14 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash,
 from flask_login import login_required, current_user
 from models.thesaurus import Term
 from forms.thesaurus import TermForm
+import os
+from werkzeug.utils import secure_filename
+from datetime import datetime
+from bson.objectid import ObjectId
+from pymongo import ASCENDING
 
 thesaurus = Blueprint('thesaurus', __name__)
+thesaurus_bp = thesaurus  # Добавляем алиас для соответствия импорту в app.py
 
 @thesaurus.route('/')
 def index():

@@ -13,7 +13,10 @@ def inject_categories():
     Returns:
         dict: Словарь с категориями
     """
-    categories = Category.get_all()
+    # Получаем клиент MongoDB из конфигурации приложения
+    client = current_app.config['MONGO_CLIENT']
+    db = client.get_database()
+    categories = Category.get_all(db)
     return {'categories': categories}
 
 def inject_now():
@@ -48,46 +51,71 @@ def inject_helper_functions():
     def get_user(user_id):
         """Получает пользователя по ID"""
         from models.user import User
-        return User.get_by_id(user_id)
+        # Получаем клиент MongoDB из конфигурации приложения
+        client = current_app.config['MONGO_CLIENT']
+        db = client.get_database()
+        return User.get_by_id(db, user_id)
     
     def get_post(post_id):
         """Получает статью по ID"""
         from models.post import Post
-        return Post.get_by_id(post_id)
+        # Получаем клиент MongoDB из конфигурации приложения
+        client = current_app.config['MONGO_CLIENT']
+        db = client.get_database()
+        return Post.get_by_id(db, post_id)
     
     def get_user_posts(user_id, limit=None):
         """Получает статьи пользователя"""
         from models.post import Post
-        return Post.get_by_author(user_id, limit)
+        # Получаем клиент MongoDB из конфигурации приложения
+        client = current_app.config['MONGO_CLIENT']
+        db = client.get_database()
+        return Post.get_by_author(db, user_id, limit)
     
     def get_user_posts_count(user_id):
         """Получает количество статей пользователя"""
+        # Используем mongo.db вместо получения из конфигурации
         return mongo.db.posts.count_documents({'author_id': user_id})
     
     def get_related_posts(post_id, category_id, limit=3):
         """Получает связанные статьи"""
         from models.post import Post
-        return Post.get_related(post_id, category_id, limit)
+        # Получаем клиент MongoDB из конфигурации приложения
+        client = current_app.config['MONGO_CLIENT']
+        db = client.get_database()
+        return Post.get_related(db, post_id, category_id, limit)
     
     def get_popular_posts(limit=5):
         """Получает популярные статьи"""
         from models.post import Post
-        return Post.get_popular(limit)
+        # Получаем клиент MongoDB из конфигурации приложения
+        client = current_app.config['MONGO_CLIENT']
+        db = client.get_database()
+        return Post.get_popular(db, limit)
     
     def get_comment_replies(comment_id):
         """Получает ответы на комментарий"""
         from models.comment import Comment
-        return Comment.get_replies(comment_id)
+        # Получаем клиент MongoDB из конфигурации приложения
+        client = current_app.config['MONGO_CLIENT']
+        db = client.get_database()
+        return Comment.get_replies(db, comment_id)
     
     def get_popular_tags(limit=20):
         """Получает популярные теги"""
         from models.post import Post
-        return Post.get_popular_tags(limit)
+        # Получаем клиент MongoDB из конфигурации приложения
+        client = current_app.config['MONGO_CLIENT']
+        db = client.get_database()
+        return Post.get_popular_tags(db, limit)
     
     def get_alphabet():
         """Получает алфавит для тезауруса"""
         from models.term import Term
-        return Term.get_alphabet()
+        # Получаем клиент MongoDB из конфигурации приложения
+        client = current_app.config['MONGO_CLIENT']
+        db = client.get_database()
+        return Term.get_alphabet(db)
     
     return {
         'get_user': get_user,

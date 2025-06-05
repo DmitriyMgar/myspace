@@ -2,14 +2,15 @@
 Основной файл приложения Flask
 """
 import os
-from flask import Flask
+from flask import Flask, render_template
 from flask_pymongo import PyMongo
 from flask_login import LoginManager
 from flask_wtf.csrf import CSRFProtect
-from flask_misaka import Misaka
+from flaskext.markdown import Markdown
 from flask_mail import Mail
 from flask_caching import Cache
 from dotenv import load_dotenv
+from pymongo import MongoClient
 
 # Импорт конфигурации
 from config import config
@@ -18,7 +19,6 @@ from config import config
 mongo = PyMongo()
 login_manager = LoginManager()
 csrf = CSRFProtect()
-md = Misaka()
 mail = Mail()
 cache = Cache()
 
@@ -45,7 +45,7 @@ def create_app(config_name='default'):
     mongo.init_app(app)
     login_manager.init_app(app)
     csrf.init_app(app)
-    md.init_app(app)
+    Markdown(app)
     mail.init_app(app)
     cache.init_app(app)
     
@@ -63,11 +63,11 @@ def create_app(config_name='default'):
         return User.get_by_id(user_id)
     
     # Регистрация маршрутов
-    from routes.main import main as main_bp
-    from routes.auth import auth as auth_bp
-    from routes.blog import blog as blog_bp
-    from routes.thesaurus import thesaurus as thesaurus_bp
-    from routes.admin import admin as admin_bp
+    from routes.main import main_bp
+    from routes.auth import auth_bp
+    from routes.blog import blog_bp
+    from routes.thesaurus import thesaurus_bp
+    from routes.admin import admin_bp
     
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp, url_prefix='/auth')
@@ -92,6 +92,14 @@ def create_app(config_name='default'):
     os.makedirs(os.path.join(app.static_folder, 'uploads/posts'), exist_ok=True)
     os.makedirs(os.path.join(app.static_folder, 'uploads/categories'), exist_ok=True)
     os.makedirs(os.path.join(app.static_folder, 'uploads/thesaurus'), exist_ok=True)
+    
+    # Подключение к MongoDB
+    mongo_uri = os.getenv('MONGO_URI', 'mongodb://localhost:27017/cyberblog')
+    client = MongoClient(mongo_uri)
+    db = client.get_database()
+    
+    # Добавляем клиент MongoDB в конфигурацию приложения
+    app.config['MONGO_CLIENT'] = client
     
     return app
 

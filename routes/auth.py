@@ -7,6 +7,7 @@ from werkzeug.utils import secure_filename
 from datetime import datetime
 
 auth = Blueprint('auth', __name__)
+auth_bp = auth  # Добавляем алиас для соответствия импорту в app.py
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():

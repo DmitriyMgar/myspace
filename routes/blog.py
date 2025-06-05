@@ -11,8 +11,10 @@ import os
 from werkzeug.utils import secure_filename
 from datetime import datetime
 from slugify import slugify
+from pymongo import DESCENDING
 
 blog = Blueprint('blog', __name__)
+blog_bp = blog  # Добавляем алиас для соответствия импорту в app.py
 
 @blog.route('/')
 def index():
