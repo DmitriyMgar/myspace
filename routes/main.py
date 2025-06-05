@@ -61,4 +61,9 @@ def about():
 @main.route('/contact')
 def contact():
     """Контактная страница"""
-    return render_template('contact.html') 
+    return render_template('contact.html')
+
+@main.route('/matrix-demo')
+def matrix_demo():
+    """Демонстрационная страница матричной темы"""
+    return render_template('matrix-demo.html') 

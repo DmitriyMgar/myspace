@@ -9,16 +9,21 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700&family=VT323&display=swap" rel="stylesheet">
     <!-- Основные стили -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <!-- Дополнительные стили для темной темы -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dark-theme.css') }}" id="theme-stylesheet">
+    <!-- Матричная тема -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/matrix-theme.css') }}" id="matrix-stylesheet">
+    <!-- Матричные анимации -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/matrix-animations.css') }}">
     {% block extra_css %}{% endblock %}
 </head>
-<body class="dark-theme">
+<body class="matrix-theme">
     <!-- Эффект шума -->
     <div class="noise-overlay"></div>
+    <!-- Матричные эффекты будут добавлены через JavaScript -->
 
     <!-- Навигационная панель -->
     <nav class="navbar navbar-expand-lg navbar-dark">
@@ -49,6 +54,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('main.about') }}">
                             <i class="fas fa-info-circle me-1"></i> О блоге
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link matrix-flicker" href="{{ url_for('main.matrix_demo') }}">
+                            <i class="fas fa-code me-1"></i> Матрица
                         </a>
                     </li>
                 </ul>
@@ -174,6 +184,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Основные скрипты -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <!-- Матричные эффекты -->
+    <script src="{{ url_for('static', filename='js/matrix-effects.js') }}"></script>
     {% block extra_js %}{% endblock %}
 </body>
 </html> 

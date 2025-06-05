@@ -248,23 +248,50 @@ function getCsrfToken() {
     return '';
 }
 
-// Переключатель темной темы
+// Переключатель тем
 function setupThemeToggle() {
     const themeToggle = document.getElementById('theme-toggle');
+    const matrixStylesheet = document.getElementById('matrix-stylesheet');
+    
     if (themeToggle) {
         themeToggle.addEventListener('click', function() {
             const currentTheme = localStorage.getItem('theme') || 'dark-theme';
             
+            // Циклическое переключение между темами: dark-theme -> light-theme -> matrix-theme -> dark-theme
             if (currentTheme === 'dark-theme') {
+                // Переключение на светлую тему
                 document.documentElement.classList.remove('dark-theme');
+                document.documentElement.classList.remove('matrix-theme');
                 document.documentElement.classList.add('light-theme');
                 localStorage.setItem('theme', 'light-theme');
                 themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-            } else {
+                
+                // Удаление матричных эффектов
+                removeMatrixEffects();
+            } 
+            else if (currentTheme === 'light-theme') {
+                // Переключение на матричную тему
                 document.documentElement.classList.remove('light-theme');
+                document.documentElement.classList.remove('dark-theme');
+                document.documentElement.classList.add('matrix-theme');
+                localStorage.setItem('theme', 'matrix-theme');
+                themeToggle.innerHTML = '<i class="fas fa-lightbulb"></i>';
+                
+                // Инициализация матричных эффектов
+                setTimeout(() => {
+                    initMatrixEffects();
+                }, 100);
+            }
+            else {
+                // Переключение на темную тему
+                document.documentElement.classList.remove('light-theme');
+                document.documentElement.classList.remove('matrix-theme');
                 document.documentElement.classList.add('dark-theme');
                 localStorage.setItem('theme', 'dark-theme');
                 themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                
+                // Удаление матричных эффектов
+                removeMatrixEffects();
             }
         });
         
@@ -274,10 +301,74 @@ function setupThemeToggle() {
         
         if (savedTheme === 'light-theme') {
             themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-        } else {
+        } 
+        else if (savedTheme === 'matrix-theme') {
+            themeToggle.innerHTML = '<i class="fas fa-lightbulb"></i>';
+            // Инициализация матричных эффектов
+            setTimeout(() => {
+                initMatrixEffects();
+            }, 100);
+        }
+        else {
             themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
         }
     }
+}
+
+// Инициализация матричных эффектов
+function initMatrixEffects() {
+    // Проверка, загружен ли скрипт с матричными эффектами
+    if (typeof initMatrixRain === 'function') {
+        initMatrixRain();
+    }
+    
+    // Добавление классов для эффектов
+    document.querySelectorAll('.navbar-brand, h1, h2, h3').forEach(el => {
+        el.classList.add('glitch-effect');
+    });
+    
+    document.querySelectorAll('.card, .post-card').forEach(el => {
+        el.classList.add('matrix-border');
+    });
+    
+    document.querySelectorAll('.btn-cyber-primary').forEach(el => {
+        el.classList.add('matrix-pulse');
+    });
+    
+    document.querySelectorAll('.lead, .post-excerpt').forEach(el => {
+        el.classList.add('typewriter-effect');
+    });
+}
+
+// Удаление матричных эффектов
+function removeMatrixEffects() {
+    // Удаление canvas с матричным дождем
+    const matrixCanvas = document.querySelector('.matrix-rain');
+    if (matrixCanvas) {
+        matrixCanvas.remove();
+    }
+    
+    // Удаление классов эффектов
+    document.querySelectorAll('.glitch-effect').forEach(el => {
+        el.classList.remove('glitch-effect');
+    });
+    
+    document.querySelectorAll('.matrix-border').forEach(el => {
+        el.classList.remove('matrix-border');
+        
+        // Удаление анимированных границ
+        el.querySelectorAll('.matrix-border-line').forEach(line => {
+            line.remove();
+        });
+    });
+    
+    document.querySelectorAll('.matrix-pulse').forEach(el => {
+        el.classList.remove('matrix-pulse');
+    });
+    
+    document.querySelectorAll('.typewriter-effect').forEach(el => {
+        el.classList.remove('typewriter-effect');
+    });
 }
 
 // Анимации при прокрутке

@@ -1,0 +1,283 @@
+{% extends "base.html" %}
+
+{% block title %}Демонстрация Матричной Темы{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h1 class="glitch-effect" data-text="МАТРИЧНАЯ ТЕМА">МАТРИЧНАЯ ТЕМА</h1>
+            <p class="lead typewriter-effect">Демонстрация эффектов и стилей в духе фильма "Матрица"</p>
+            <div class="glow-line mb-5"></div>
+        </div>
+    </div>
+
+    <!-- Секция с эффектами текста -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card matrix-border">
+                <div class="card-body">
+                    <h2 class="card-title">Текстовые эффекты</h2>
+                    <div class="glow-line mb-4"></div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <h4>Глитч-эффект</h4>
+                            <p class="glitch-effect" data-text="Это текст с глитч-эффектом">Это текст с глитч-эффектом</p>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h4>Печатающийся текст</h4>
+                            <p class="typewriter-effect">Этот текст печатается на экране</p>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h4>Мерцание</h4>
+                            <p class="matrix-flicker">Этот текст мерцает как неисправный терминал</p>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h4>Голограмма</h4>
+                            <p class="hologram">Голографический эффект с бликами</p>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h4>Код</h4>
+                            <div class="code-effect" data-prefix=">&nbsp;">System.out.println("Hello, Matrix!");</div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h4>Загрузка</h4>
+                            <p class="matrix-loading">Загрузка данных...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Секция с эффектами контейнеров -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card matrix-border">
+                <div class="card-body">
+                    <h2 class="card-title">Эффекты контейнеров</h2>
+                    <div class="glow-line mb-4"></div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <h4>Матричная граница</h4>
+                            <div class="p-3 matrix-border">
+                                <p>Контейнер с анимированной границей</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h4>Пульсация</h4>
+                            <div class="p-3 border matrix-pulse">
+                                <p>Контейнер с пульсирующим эффектом</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h4>Цифровой шум</h4>
+                            <div class="p-3 border digital-noise">
+                                <p>Контейнер с эффектом цифрового шума</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h4>Сканирование</h4>
+                            <div class="p-3 border scan-effect">
+                                <p>Контейнер с эффектом сканирования</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h4>Дефрагментация</h4>
+                            <div class="p-3 border defragment">
+                                <p>Контейнер с эффектом дефрагментации</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h4>Хакерская сетка</h4>
+                            <div class="p-3 border hack-effect">
+                                <p>Контейнер с эффектом хакерской сетки</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Секция с кнопками -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card matrix-border">
+                <div class="card-body">
+                    <h2 class="card-title">Кнопки и элементы управления</h2>
+                    <div class="glow-line mb-4"></div>
+                    
+                    <div class="row">
+                        <div class="col-md-4 mb-4 text-center">
+                            <button class="btn btn-cyber-primary">Основная кнопка</button>
+                        </div>
+                        <div class="col-md-4 mb-4 text-center">
+                            <button class="btn btn-cyber-secondary">Вторичная кнопка</button>
+                        </div>
+                        <div class="col-md-4 mb-4 text-center">
+                            <button class="btn btn-cyber-danger">Опасная кнопка</button>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6 mb-4">
+                            <label for="matrixInput" class="form-label">Поле ввода</label>
+                            <input type="text" class="form-control" id="matrixInput" placeholder="Введите данные...">
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label for="matrixSelect" class="form-label">Выпадающий список</label>
+                            <select class="form-select" id="matrixSelect">
+                                <option selected>Выберите опцию</option>
+                                <option value="1">Опция 1</option>
+                                <option value="2">Опция 2</option>
+                                <option value="3">Опция 3</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Секция с алертами -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card matrix-border">
+                <div class="card-body">
+                    <h2 class="card-title">Уведомления</h2>
+                    <div class="glow-line mb-4"></div>
+                    
+                    <div class="alert alert-success mb-3" role="alert">
+                        <i class="fas fa-check-circle me-2"></i> Успешное выполнение операции
+                    </div>
+                    
+                    <div class="alert alert-info mb-3" role="alert">
+                        <i class="fas fa-info-circle me-2"></i> Информационное сообщение
+                    </div>
+                    
+                    <div class="alert alert-warning mb-3" role="alert">
+                        <i class="fas fa-exclamation-triangle me-2"></i> Предупреждение
+                    </div>
+                    
+                    <div class="alert alert-danger mb-3" role="alert">
+                        <i class="fas fa-times-circle me-2"></i> Критическая ошибка
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Секция с таблицей -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card matrix-border">
+                <div class="card-body">
+                    <h2 class="card-title">Таблица данных</h2>
+                    <div class="glow-line mb-4"></div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-cyber">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Имя</th>
+                                    <th>Позывной</th>
+                                    <th>Статус</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Томас Андерсон</td>
+                                    <td>Нео</td>
+                                    <td><span class="badge bg-success">Избранный</span></td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Морфеус</td>
+                                    <td>Капитан</td>
+                                    <td><span class="badge bg-info">Активен</span></td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>Тринити</td>
+                                    <td>Первая</td>
+                                    <td><span class="badge bg-info">Активна</span></td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>Агент Смит</td>
+                                    <td>Программа</td>
+                                    <td><span class="badge bg-danger">Враг</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Секция с карточками -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">Карточки контента</h2>
+            <div class="glow-line mb-4"></div>
+            
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="post-card matrix-border">
+                        <div class="post-card-inner">
+                            <div class="post-image">
+                                <img src="https://via.placeholder.com/300x200" alt="Placeholder" class="img-fluid">
+                            </div>
+                            <div class="post-content p-3">
+                                <h3 class="post-title">Красная таблетка</h3>
+                                <div class="post-meta mb-2">
+                                    <small><i class="fas fa-calendar me-1"></i> 01.01.2023</small>
+                                </div>
+                                <p class="post-excerpt">Узнай насколько глубока кроличья нора...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="post-card matrix-border">
+                        <div class="post-card-inner">
+                            <div class="post-image">
+                                <img src="https://via.placeholder.com/300x200" alt="Placeholder" class="img-fluid">
+                            </div>
+                            <div class="post-content p-3">
+                                <h3 class="post-title">Синяя таблетка</h3>
+                                <div class="post-meta mb-2">
+                                    <small><i class="fas fa-calendar me-1"></i> 02.01.2023</small>
+                                </div>
+                                <p class="post-excerpt">И история закончится, ты проснешься и поверишь...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="post-card matrix-border">
+                        <div class="post-card-inner">
+                            <div class="post-image">
+                                <img src="https://via.placeholder.com/300x200" alt="Placeholder" class="img-fluid">
+                            </div>
+                            <div class="post-content p-3">
+                                <h3 class="post-title">Ложка</h3>
+                                <div class="post-meta mb-2">
+                                    <small><i class="fas fa-calendar me-1"></i> 03.01.2023</small>
+                                </div>
+                                <p class="post-excerpt">Не ложку нужно гнуть, а себя...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

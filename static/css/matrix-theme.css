@@ -1,0 +1,304 @@
+/* МАТРИЧНАЯ ТЕМА ДЛЯ КИБЕРБЛОГА */
+
+/* Переменные матричной темы */
+.matrix-theme {
+    --primary-color: #00ff00;
+    --secondary-color: #00cc00;
+    --accent-color: #32cd32;
+    --background-color: #000000;
+    --background-alt-color: #0a0a0a;
+    --text-color: #ccffcc;
+    --text-muted: #669966;
+    --border-color: #003300;
+    
+    --success-color: #00ff00;
+    --warning-color: #ccff00;
+    --danger-color: #ff3333;
+    --info-color: #00cc99;
+    
+    /* Матричные эффекты */
+    --matrix-glow: 0 0 10px var(--primary-color);
+    --glitch-intensity: 5px;
+    --scan-line-opacity: 0.15;
+}
+
+/* Основные стили для матричной темы */
+.matrix-theme body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.95)), 
+                      url('../img/grid-bg.png');
+    background-size: cover;
+    background-attachment: fixed;
+    position: relative;
+}
+
+/* Эффект сканлайнов */
+.matrix-theme body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0) 0px,
+        rgba(0, 0, 0, 0) 1px,
+        rgba(0, 255, 0, var(--scan-line-opacity)) 1px,
+        rgba(0, 255, 0, var(--scan-line-opacity)) 2px
+    );
+    pointer-events: none;
+    z-index: 9998;
+    animation: scanline 10s linear infinite;
+}
+
+@keyframes scanline {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 0 100%;
+    }
+}
+
+/* Матричный дождь */
+.matrix-rain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Навигация для матричной темы */
+.matrix-theme .navbar {
+    background-color: rgba(0, 0, 0, 0.85);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+}
+
+.matrix-theme .navbar-brand {
+    text-shadow: var(--matrix-glow);
+}
+
+/* Карточки и контейнеры для матричной темы */
+.matrix-theme .card,
+.matrix-theme .sidebar-widget,
+.matrix-theme .post-card,
+.matrix-theme .auth-card,
+.matrix-theme .editor-sidebar,
+.matrix-theme .comment {
+    background-color: rgba(0, 10, 0, 0.8);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.1);
+}
+
+.matrix-theme .card:hover,
+.matrix-theme .post-card:hover {
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+}
+
+/* Формы для матричной темы */
+.matrix-theme .form-control,
+.matrix-theme .form-select {
+    background-color: rgba(0, 10, 0, 0.8);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+.matrix-theme .form-control:focus,
+.matrix-theme .form-select:focus {
+    background-color: rgba(0, 15, 0, 0.9);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
+}
+
+/* Кнопки для матричной темы */
+.matrix-theme .btn-cyber-primary {
+    background-color: rgba(0, 20, 0, 0.8);
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    box-shadow: 0 0 8px rgba(0, 255, 0, 0.3);
+    text-shadow: 0 0 5px var(--primary-color);
+}
+
+.matrix-theme .btn-cyber-primary:hover {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    box-shadow: 0 0 15px var(--primary-color);
+}
+
+/* Эффекты для матричной темы */
+.matrix-theme .glow-text {
+    text-shadow: var(--matrix-glow);
+}
+
+.matrix-theme .glow-line {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+    box-shadow: 0 0 8px var(--primary-color);
+}
+
+/* Матричный глитч-эффект */
+.matrix-theme .glitch-text {
+    position: relative;
+    color: var(--primary-color);
+    text-shadow: 0 0 5px var(--primary-color);
+}
+
+.matrix-theme .glitch-text::before,
+.matrix-theme .glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+}
+
+.matrix-theme .glitch-text::before {
+    animation: glitch-matrix 2s infinite;
+    color: #0f0;
+    z-index: -1;
+}
+
+.matrix-theme .glitch-text::after {
+    animation: glitch-matrix 3s infinite;
+    color: #0f0;
+    z-index: -2;
+}
+
+@keyframes glitch-matrix {
+    0% {
+        transform: translate(0);
+        text-shadow: 0 0 var(--matrix-glow);
+    }
+    20% {
+        transform: translate(-2px, 1px);
+        text-shadow: 1px 0 var(--matrix-glow);
+    }
+    40% {
+        transform: translate(-1px, -1px);
+        text-shadow: 2px 0 var(--matrix-glow);
+    }
+    60% {
+        transform: translate(1px, 1px);
+        text-shadow: -1px 0 var(--matrix-glow);
+    }
+    80% {
+        transform: translate(2px, -1px);
+        text-shadow: -2px 0 var(--matrix-glow);
+    }
+    100% {
+        transform: translate(0);
+        text-shadow: 0 0 var(--matrix-glow);
+    }
+}
+
+/* Эффект печатающегося текста */
+.matrix-theme .typewriter-text {
+    overflow: hidden;
+    border-right: 2px solid var(--primary-color);
+    white-space: nowrap;
+    margin: 0 auto;
+    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+    color: var(--primary-color);
+}
+
+/* Таблицы для матричной темы */
+.matrix-theme .table-cyber thead th {
+    background-color: rgba(0, 20, 0, 0.8);
+    border-bottom: 2px solid var(--border-color);
+    color: var(--primary-color);
+    text-shadow: 0 0 5px var(--primary-color);
+}
+
+.matrix-theme .table-cyber tbody tr {
+    background-color: rgba(0, 10, 0, 0.4);
+}
+
+.matrix-theme .table-cyber tbody tr:hover {
+    background-color: rgba(0, 255, 0, 0.1);
+}
+
+/* Ссылки для матричной темы */
+.matrix-theme a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.matrix-theme a:hover {
+    color: #ffffff;
+    text-shadow: 0 0 8px var(--primary-color);
+}
+
+/* Футер для матричной темы */
+.matrix-theme .footer {
+    background-color: rgba(0, 0, 0, 0.85);
+    border-top: 1px solid var(--border-color);
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+}
+
+/* Код и блоки кода для матричной темы */
+.matrix-theme code {
+    color: var(--primary-color);
+    background-color: rgba(0, 20, 0, 0.5);
+    text-shadow: 0 0 3px var(--primary-color);
+}
+
+.matrix-theme pre {
+    background-color: rgba(0, 10, 0, 0.8);
+    border: 1px solid var(--border-color);
+    box-shadow: inset 0 0 10px rgba(0, 255, 0, 0.1);
+}
+
+/* Анимированные границы для карточек */
+.matrix-theme .matrix-border {
+    position: relative;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+}
+
+.matrix-theme .matrix-border::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background-color: var(--primary-color);
+    animation: matrix-border 2s linear infinite;
+    box-shadow: 0 0 8px var(--primary-color);
+}
+
+@keyframes matrix-border {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* Алерты для матричной темы */
+.matrix-theme .alert {
+    background-color: rgba(0, 10, 0, 0.8);
+    border-left: 4px solid var(--primary-color);
+}
+
+.matrix-theme .alert-success {
+    border-color: var(--success-color);
+}
+
+.matrix-theme .alert-danger {
+    border-color: var(--danger-color);
+}
+
+.matrix-theme .alert-warning {
+    border-color: var(--warning-color);
+}
+
+.matrix-theme .alert-info {
+    border-color: var(--info-color);
+} 

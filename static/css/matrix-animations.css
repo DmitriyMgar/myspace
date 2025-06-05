@@ -1,0 +1,332 @@
+/* Дополнительные анимации и эффекты для матричной темы */
+
+/* Глитч-эффекты */
+.glitch-wrapper {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.glitch-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.1s ease, filter 0.1s ease;
+    pointer-events: none;
+}
+
+.glitch-layer-1 {
+    z-index: -1;
+    color: #0f0;
+}
+
+.glitch-layer-2 {
+    z-index: -2;
+    color: #0f0;
+}
+
+/* Эффект сканирования */
+.scan-effect {
+    position: relative;
+    overflow: hidden;
+}
+
+.scan-line {
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(to right, 
+        rgba(0, 255, 0, 0), 
+        rgba(0, 255, 0, 0.8), 
+        rgba(0, 255, 0, 0));
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* Эффект печатающегося текста с курсором */
+.typewriter-effect {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 0.15em solid #0f0;
+    animation: blink-caret 0.75s step-end infinite;
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: #0f0; }
+}
+
+/* Анимированные границы */
+.matrix-border-line {
+    position: absolute;
+    background-color: #0f0;
+    box-shadow: 0 0 8px #0f0;
+    z-index: 1;
+}
+
+.matrix-border-top {
+    top: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: left;
+}
+
+.matrix-border-right {
+    top: 0;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    transform: scaleY(0);
+    transform-origin: top;
+}
+
+.matrix-border-bottom {
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: right;
+}
+
+.matrix-border-left {
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    transform: scaleY(0);
+    transform-origin: bottom;
+}
+
+@keyframes matrix-border-horizontal {
+    0% { transform: scaleX(0); }
+    100% { transform: scaleX(1); }
+}
+
+@keyframes matrix-border-vertical {
+    0% { transform: scaleY(0); }
+    100% { transform: scaleY(1); }
+}
+
+/* Пульсирующий эффект */
+.matrix-pulse {
+    animation: matrix-pulse 2s infinite;
+}
+
+@keyframes matrix-pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(0, 255, 0, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 255, 0, 0);
+    }
+}
+
+/* Эффект цифрового шума */
+.digital-noise {
+    position: relative;
+    overflow: hidden;
+}
+
+.digital-noise::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../img/noise.png');
+    opacity: 0.05;
+    pointer-events: none;
+    animation: noise-animation 0.2s infinite;
+}
+
+@keyframes noise-animation {
+    0% { transform: translate(0, 0); }
+    10% { transform: translate(-5%, -5%); }
+    20% { transform: translate(10%, 5%); }
+    30% { transform: translate(-5%, 10%); }
+    40% { transform: translate(15%, -10%); }
+    50% { transform: translate(-15%, 5%); }
+    60% { transform: translate(10%, 10%); }
+    70% { transform: translate(-10%, -5%); }
+    80% { transform: translate(5%, 15%); }
+    90% { transform: translate(-5%, -15%); }
+    100% { transform: translate(0, 0); }
+}
+
+/* Эффект мерцания */
+.matrix-flicker {
+    animation: matrix-flicker 2s infinite;
+}
+
+@keyframes matrix-flicker {
+    0% { opacity: 1; }
+    5% { opacity: 0.8; }
+    10% { opacity: 1; }
+    15% { opacity: 0.3; }
+    20% { opacity: 1; }
+    70% { opacity: 1; }
+    72% { opacity: 0.2; }
+    77% { opacity: 1; }
+    100% { opacity: 1; }
+}
+
+/* Эффект голограммы */
+.hologram {
+    position: relative;
+    color: #0f0;
+    text-shadow: 0 0 5px #0f0;
+    overflow: hidden;
+}
+
+.hologram::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, 
+        rgba(0, 255, 0, 0), 
+        rgba(0, 255, 0, 0.1), 
+        rgba(0, 255, 0, 0));
+    transform: skewX(-25deg);
+    animation: hologram-shine 3s infinite;
+}
+
+@keyframes hologram-shine {
+    0% { left: -100%; }
+    100% { left: 200%; }
+}
+
+/* Эффект дефрагментации */
+.defragment {
+    position: relative;
+    overflow: hidden;
+}
+
+.defragment::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(
+        to bottom,
+        transparent 50%,
+        rgba(0, 255, 0, 0.05) 50%
+    );
+    background-size: 100% 4px;
+    animation: defragment 1s linear infinite;
+}
+
+@keyframes defragment {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 100%; }
+}
+
+/* Эффект загрузки */
+.matrix-loading {
+    position: relative;
+    display: inline-block;
+}
+
+.matrix-loading::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #0f0;
+    box-shadow: 0 0 5px #0f0;
+    animation: matrix-loading 2s ease-in-out infinite;
+}
+
+@keyframes matrix-loading {
+    0% { width: 0; }
+    50% { width: 100%; }
+    100% { width: 0; }
+}
+
+/* Эффект кода */
+.code-effect {
+    position: relative;
+    overflow: hidden;
+    background-color: rgba(0, 10, 0, 0.8);
+    border: 1px solid #003300;
+    padding: 10px;
+    font-family: monospace;
+    color: #0f0;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+}
+
+.code-effect::before {
+    content: attr(data-prefix);
+    color: #0f0;
+    margin-right: 10px;
+    animation: blink-caret 1s step-end infinite;
+}
+
+/* Эффект взлома */
+.hack-effect {
+    position: relative;
+    overflow: hidden;
+    padding: 5px;
+}
+
+.hack-effect::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(
+        rgba(0, 255, 0, 0.05) 1px,
+        transparent 1px
+    ),
+    linear-gradient(
+        90deg,
+        rgba(0, 255, 0, 0.05) 1px,
+        transparent 1px
+    );
+    background-size: 10px 10px;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Эффект матричных частиц */
+.matrix-particles {
+    position: relative;
+    overflow: hidden;
+}
+
+.matrix-particle {
+    position: absolute;
+    background-color: #0f0;
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    opacity: 0.7;
+    box-shadow: 0 0 2px #0f0;
+    animation: particle-float 3s infinite;
+}
+
+@keyframes particle-float {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+    100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+} 
