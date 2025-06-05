@@ -99,6 +99,17 @@
 ### Предварительные требования:
 - Python 3.8+
 - MongoDB
+- Установленные пакеты:
+  - Flask и его расширения (Flask-Login, Flask-WTF, Flask-PyMongo, Flask-Markdown, Flask-Mail, Flask-Caching, Flask-Bcrypt, Flask-Moment)
+  - PyMongo
+  - python-dotenv
+  - beautifulsoup4
+  - pygments
+  - Pillow
+  - python-slugify
+  - email-validator
+  - bleach
+  - и другие зависимости из requirements.txt
 
 ### Установка:
 1. Клонировать репозиторий
@@ -106,6 +117,48 @@
 3. Установить зависимости из requirements.txt
 4. Настроить переменные окружения в файле .env
 5. Запустить приложение через Flask или WSGI-сервер
+
+### Запуск приложения:
+1. Активировать виртуальное окружение:
+   ```
+   .\.venv\Scripts\activate  # Для Windows
+   source .venv/bin/activate  # Для Linux/Mac
+   ```
+
+2. Установить все зависимости:
+   ```
+   pip install -r requirements.txt
+   
+   # Если некоторые пакеты отсутствуют, установить их отдельно:
+   pip install beautifulsoup4 pygments
+   ```
+
+3. Запустить приложение через скрипт:
+   ```
+   # Создать файл run_app.ps1 (для Windows):
+   $env:MONGO_URI = "mongodb://localhost:27017/cyberblog"
+   $env:FLASK_ENV = "development"
+   $env:SECRET_KEY = "your_secret_key"
+   $env:DEBUG = "True"
+   $env:MONGO_CLIENT = "mongodb://localhost:27017/cyberblog"
+   
+   Write-Host "Запуск приложения КиберБлог..."
+   .\.venv\Scripts\python app.py
+   
+   # Затем выполнить:
+   .\run_app.ps1
+   ```
+
+4. Или запустить через командную строку:
+   ```
+   # Для Windows PowerShell:
+   $env:MONGO_URI="mongodb://localhost:27017/cyberblog"; $env:FLASK_ENV="development"; $env:SECRET_KEY="your_secret_key"; $env:DEBUG="True"; $env:MONGO_CLIENT="mongodb://localhost:27017/cyberblog"; python app.py
+   
+   # Для Linux/Mac:
+   export MONGO_URI="mongodb://localhost:27017/cyberblog" FLASK_ENV="development" SECRET_KEY="your_secret_key" DEBUG="True" MONGO_CLIENT="mongodb://localhost:27017/cyberblog" && python app.py
+   ```
+
+5. Приложение будет доступно по адресу http://127.0.0.1:5000/
 
 ### Переменные окружения:
 - `SECRET_KEY` - секретный ключ для Flask
@@ -150,6 +203,28 @@ cyberblog/
     ├── thesaurus/          # Шаблоны тезауруса
     ├── admin/              # Шаблоны админки
     └── errors/             # Шаблоны ошибок
+```
+
+## Устранение неполадок
+
+### Проблема с MongoDB
+Если при запуске приложения возникает ошибка `KeyError: 'MONGO_CLIENT'`, необходимо добавить MONGO_CLIENT в конфигурацию приложения:
+1. В файле app.py добавить строку `app.config['MONGO_CLIENT'] = client` перед `return app`
+2. При запуске через командную строку или скрипт указать переменную окружения MONGO_CLIENT
+
+### Проблема с шаблонами
+Если возникает ошибка `TemplateNotFound`, проверьте пути к шаблонам в маршрутах и структуру директории templates.
+
+### Проблема с тегами Jinja
+Если возникает ошибка `TemplateSyntaxError: Encountered unknown tag`, проверьте правильность использования тегов и фильтров в шаблонах.
+
+### Проблема с аргументами методов моделей
+Если возникает ошибка `TypeError: ... missing 1 required positional argument: 'db'`, убедитесь, что при вызове методов моделей передается объект базы данных.
+
+### Проблема с импортом flaskext.markdown
+В приложении используется импорт `from flaskext.markdown import Markdown`, но этот модуль является частью пакета Flask-Markdown. Если возникает ошибка импорта, убедитесь, что пакет Flask-Markdown установлен:
+```
+pip install Flask-Markdown
 ```
 
 ## Лицензия
